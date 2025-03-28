@@ -48,6 +48,16 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#step-1-define-the-range-formula">Step 1: Define the Range Formula</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-analyze-the-relationship">Step 2: Analyze the Relationship</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-special-cases">Step 3: Special Cases</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-visualization-optional">Step 4: Visualization (Optional)</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2</a>
@@ -172,7 +182,52 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
-<p>test</p>
+<p>Sure! Here's a simple solution analyzing how the range of a projectile depends on the angle of projection.</p>
+<h3 id="step-1-define-the-range-formula"><strong>Step 1: Define the Range Formula</strong></h3>
+<p>For a projectile launched with an initial velocity <span class="arithmatex">\( v_0 \)</span> at an angle <span class="arithmatex">\( \theta \)</span> (assuming launch and landing at the same height), the range <span class="arithmatex">\( R \)</span> is given by:</p>
+<div class="arithmatex">\[
+R = \frac{v_0^2 \sin(2\theta)}{g}
+\]</div>
+<p>where:
+- <span class="arithmatex">\( v_0 \)</span> is the initial velocity,
+- <span class="arithmatex">\( g \)</span> is the acceleration due to gravity (≈ 9.81 m/s²),
+- <span class="arithmatex">\( \theta \)</span> is the launch angle.</p>
+<h3 id="step-2-analyze-the-relationship"><strong>Step 2: Analyze the Relationship</strong></h3>
+<ul>
+<li>The function <span class="arithmatex">\( R = \sin(2\theta) \)</span> suggests that the range depends on the sine of twice the angle.</li>
+<li>The maximum value of <span class="arithmatex">\( \sin(2\theta) \)</span> is 1, which occurs at <span class="arithmatex">\( 2\theta = 90^\circ \)</span>, meaning the maximum range happens at <strong><span class="arithmatex">\( \theta = 45^\circ \)</span></strong>.</li>
+</ul>
+<h3 id="step-3-special-cases"><strong>Step 3: Special Cases</strong></h3>
+<ol>
+<li><strong><span class="arithmatex">\( \theta = 0^\circ \)</span> or <span class="arithmatex">\( \theta = 90^\circ \)</span>:</strong> <span class="arithmatex">\( R = 0 \)</span> (no horizontal displacement).</li>
+<li><strong><span class="arithmatex">\( \theta = 45^\circ \)</span>:</strong> Maximum range.</li>
+</ol>
+<h3 id="step-4-visualization-optional"><strong>Step 4: Visualization (Optional)</strong></h3>
+<p>A simple Python plot using Matplotlib can help visualize the range function:</p>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+g = 9.81  # Gravity (m/s^2)
+v0 = 10   # Initial velocity (m/s)
+
+angles = np.linspace(0, 90, 100)  # Angle from 0 to 90 degrees
+radians = np.radians(angles)  # Convert to radians
+ranges = (v0**2 * np.sin(2 * radians)) / g  # Compute range
+
+plt.plot(angles, ranges)
+plt.xlabel("Launch Angle (degrees)")
+plt.ylabel("Range (m)")
+plt.title("Projectile Range vs. Launch Angle")
+plt.grid()
+plt.show()
+</code></pre>
+<h3 id="conclusion"><strong>Conclusion</strong></h3>
+<ul>
+<li>The range is <strong>symmetrical</strong> around <span class="arithmatex">\( 45^\circ \)</span>.</li>
+<li>The maximum range occurs at <span class="arithmatex">\( 45^\circ \)</span>.</li>
+<li>The function follows a sine wave pattern based on <span class="arithmatex">\( \sin(2\theta) \)</span>.</li>
+</ul>
+<p>Would you like a more detailed breakdown or a different approach? 🚀</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
