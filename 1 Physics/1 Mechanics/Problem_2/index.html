@@ -172,6 +172,61 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-2">Problem 2</h1>
+<h1 id="investigation-of-the-dynamics-of-a-forced-damped-pendulum">🌀 Investigation of the Dynamics of a Forced Damped Pendulum</h1>
+<h2 id="theoretical-foundation">📚 Theoretical Foundation</h2>
+<p>The equation of motion for a pendulum with damping and an external force is given by:</p>
+<div class="arithmatex">\[
+\frac{d^2\theta}{dt^2} + \gamma \frac{d\theta}{dt} + \omega_0^2 \sin(\theta) = A \cos(\omega t)
+\]</div>
+<p>For small angles:<br/>
+[
+\sin(\theta) \approx \theta
+]</p>
+<p>This allows the analysis of <strong>damped harmonic oscillations</strong>, <strong>resonance</strong>, and even <strong>chaos</strong> by varying parameters.</p>
+<hr/>
+<h2 id="python-model-of-the-pendulum">🧪 Python Model of the Pendulum</h2>
+<p>A numerical solution is obtained using the Runge-Kutta method (4th order) from the <code>scipy.integrate.solve_ivp</code> package.</p>
+<p>Model parameters:
+- γ (damping): <code>0.1</code>
+- ω₀ (natural frequency): <code>1.5</code>
+- A (amplitude of the external force): <code>1.2</code>
+- ω (driving frequency): <code>2.0</code></p>
+<blockquote>
+<p><strong>Code can be found in the repository or below upon request.</strong></p>
+</blockquote>
+<hr/>
+<h2 id="visualization-of-results">📊 Visualization of Results</h2>
+<h3 id="1-angle-vs-time">1️⃣ Angle vs Time</h3>
+<h2 id="_1"><img alt="Angle vs Time" src="time_series_theta.png"/></h2>
+<h3 id="2-phase-portrait">2️⃣ Phase Portrait</h3>
+<p>(θ vs ω — shows the system's behavior in the state space)<br/>
+<img alt="Phase Portrait" src="phase_portrait.png"/></p>
+<hr/>
+<h3 id="3-poincare-section">3️⃣ Poincaré Section</h3>
+<p>(Sampling the position and velocity of the pendulum at certain moments — a fractal structure appears when chaos emerges)<br/>
+<img alt="Poincaré Section" src="poincare_section.png"/></p>
+<hr/>
+<h2 id="conclusions">📌 Conclusions</h2>
+<ul>
+<li>The system demonstrates <strong>various motion regimes</strong>: regular, quasiperiodic, and chaotic.</li>
+<li>Under certain conditions, <strong>resonance</strong> occurs, increasing the amplitude.</li>
+<li>When changing parameters, <strong>chaos</strong> appears — an example of complex nonlinear dynamics.</li>
+</ul>
+<hr/>
+<h2 id="applications">⚙️ Applications</h2>
+<p>This model can be applied in:
+- engineering (vibrations, damping),
+- electronics (RLC circuits),
+- biomechanics (modeling rhythmic patterns),
+- energy harvesting (smoothing oscillations).</p>
+<hr/>
+<h2 id="tools">🛠 Tools</h2>
+<ul>
+<li><strong>Python 3</strong></li>
+<li><code>NumPy</code>, <code>SciPy</code>, <code>Matplotlib</code></li>
+<li>Visual Studio Code</li>
+<li>Git, GitHub Pages</li>
+</ul>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
