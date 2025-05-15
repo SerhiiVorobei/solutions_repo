@@ -1,79 +1,155 @@
-# Problem 1
-# Orbital Period and Orbital Radius – Kepler's Third Law
+Orbital Period and Orbital Radius: Kepler's Third Law in Practice
 
-## 📘 Motivation
+🌌 Motivation
 
-Kepler's Third Law reveals the relationship between a celestial body's orbital period and its distance from the central mass. This law not only predicts how planets and satellites move but also helps astronomers measure mass and distance across the universe.
+Kepler's Third Law reveals the elegant relationship between a planet's orbital period and its distance from the body it orbits. This law provides critical insight into the structure and behavior of planetary systems, allowing astronomers to estimate masses, distances, and even discover exoplanets. It forms a bridge between Newtonian gravity and observed celestial motions.
 
----
+🔍 1. Derivation: Kepler's Third Law for Circular Orbits
 
-## 📐 Derivation of the Law (Circular Orbits)
+Newton's Law of Gravitation:
 
-Using Newton's law of gravitation and the formula for centripetal force:
 
-\[
-\frac{G M m}{r^2} = \frac{m v^2}{r}
-\]
 
-Solving for orbital speed \( v \):
+Centripetal Force for Circular Motion:
 
-\[
-v = \sqrt{\frac{G M}{r}}
-\]
 
-Now the orbital period \( T \):
 
-\[
-T = \frac{2\pi r}{v} = 2\pi \sqrt{\frac{r^3}{G M}}
-\]
+Equating gravitational force and centripetal force:
 
-Squaring both sides:
 
-\[
-T^2 = \frac{4\pi^2}{G M} r^3
-\]
 
----
 
-## 🔭 Applications in Astronomy
+Orbital period :
 
-- Calculate mass of planets/stars from satellite orbits
-- Estimate distances of celestial bodies
-- Universal law: applies to satellites, moons, planets, exoplanets, binary stars
 
----
 
-## 🌍 Example: Moon Orbit
+Substitute into the velocity equation:
 
-- Radius ≈ 384,400 km  
-- Period ≈ 27.3 days  
-- \( T^2 \propto r^3 \) holds true
 
----
 
-## 🧪 Simulation in Python
+Rearranged:
 
-```python
+
+
+Final Form (Kepler's Third Law):
+
+
+
+💭 2. Implications in Astronomy
+
+Allows calculation of planetary distances when periods are known.
+
+Estimating masses of stars or planets from satellite motion.
+
+Used in orbital mechanics to plan space missions.
+
+Example: Earth's orbit
+
+ year,  AU
+
+Any other body in the solar system follows: 
+
+🌍 3. Real-World Examples
+
+Moon Around Earth:
+
+Orbital radius  m
+
+Period  days
+
+Using Kepler's law, we can estimate Earth's mass or verify the law with actual data.
+
+Planets in the Solar System:
+
+Planet
+
+Radius (AU)
+
+Period (Years)
+
+T^2 / r^3
+
+Mercury
+
+0.39
+
+0.24
+
+1.01
+
+Venus
+
+0.72
+
+0.62
+
+1.01
+
+Earth
+
+1.00
+
+1.00
+
+1.00
+
+Mars
+
+1.52
+
+1.88
+
+1.01
+
+Jupiter
+
+5.20
+
+11.86
+
+1.00
+
+📈 4. Python Simulation of Circular Orbits
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Constants
-G = 6.67430e-11  # m^3 kg^-1 s^-2
-M_earth = 5.972e24  # kg
+G = 6.67430e-11   # gravitational constant
+M = 5.972e24      # mass of Earth (kg)
 
-# Function to compute orbital period
-def orbital_period(r, M=M_earth):
-    return 2 * np.pi * np.sqrt(r**3 / (G * M))
-
-# Radii (m)
 radii = np.linspace(1e7, 5e8, 100)
-periods = orbital_period(radii)
+periods = 2 * np.pi * np.sqrt(radii**3 / (G * M))
 
-# Plotting T² vs r³
-plt.figure(figsize=(8, 6))
-plt.plot(radii**3, periods**2)
-plt.xlabel("Orbital Radius Cubed (r³) [m³]")
-plt.ylabel("Orbital Period Squared (T²) [s²]")
-plt.title("Kepler's Third Law: T² vs r³")
+plt.plot(radii / 1e6, periods / 3600, label='T vs r (Earth orbit)')
+plt.xlabel('Orbital Radius (10^6 m)')
+plt.ylabel('Orbital Period (hours)')
+plt.title('Orbital Period vs Radius')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+Verification of Kepler's Law:
+
+T2 = periods**2
+r3 = radii**3
+
+plt.plot(r3, T2)
+plt.xlabel('r^3')
+plt.ylabel('T^2')
+plt.title("Kepler's Third Law: T^2 vs r^3")
 plt.grid(True)
 plt.show()
+
+🔄 5. Extensions to Elliptical Orbits
+
+For elliptical orbits,  is replaced by the semi-major axis .
+
+Kepler's Law still holds: 
+
+Applies to comets, asteroids, and binary stars.
+
+Used to determine masses of galaxies and detect exoplanets.
+
+✅ Conclusion
+
+Kepler's Third Law elegantly connects time and space for orbiting bodies. From understanding planetary motion to designing satellite systems, the relationship  is fundamental. Through derivation, application, and simulation, this project confirms the law and shows its profound relevance across astronomy and physics.
