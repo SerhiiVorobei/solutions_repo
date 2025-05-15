@@ -6,13 +6,13 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../../img/favicon.ico" rel="shortcut icon"/>
-<title>Problem 2 - Physics and Mathematics</title>
+<title>Investigating the Dynamics of a Forced Damped Pendulum - Physics and Mathematics</title>
 <link href="../../../css/theme.css" rel="stylesheet"/>
 <link href="../../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "Problem 2";
+        var mkdocs_page_name = "Investigating the Dynamics of a Forced Damped Pendulum";
         var mkdocs_page_input_path = "1 Physics/1 Mechanics/Problem_2.md";
         var mkdocs_page_url = null;
       </script>
@@ -52,8 +52,28 @@
 <ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../Problem_1/">Problem 1</a>
 </li>
-<li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
+<li class="toctree-l2 current"><a class="reference internal current" href="#">Investigating the Dynamics of a Forced Damped Pendulum</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#motivation">🎯 Motivation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1-theoretical-background">📘 1. Theoretical Background</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#equation-of-motion">Equation of Motion</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#small-angle-approximation">Small-Angle Approximation</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-dynamics-analysis">🔍 2. Dynamics Analysis</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-real-world-applications">🏗️ 3. Real-World Applications</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-python-simulation">💻 4. Python Simulation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters:</a>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -167,7 +187,7 @@
 <li><a aria-label="Docs" class="icon icon-home" href="../../.."></a></li>
 <li class="breadcrumb-item">1 Physics</li>
 <li class="breadcrumb-item">1 Mechanics</li>
-<li class="breadcrumb-item active">Problem 2</li>
+<li class="breadcrumb-item active">Investigating the Dynamics of a Forced Damped Pendulum</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -175,389 +195,88 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<p>🎓 Investigating the Dynamics of a Forced Damped Pendulum
-🔍 Motivation
-The forced damped pendulum is a classic example of a nonlinear dynamical system. Due to the interplay between restoring forces, damping, and external periodic driving, it exhibits a wide range of behaviors—from simple harmonic motion to rich, chaotic dynamics.</p>
-<p>This system models real-world phenomena such as:</p>
-<p>Vibrating mechanical systems (e.g., bridges),</p>
-<p>Driven electrical circuits (RLC circuits),</p>
-<p>Human gait modeling,</p>
-<p>Energy harvesting mechanisms.</p>
-<ol>
-<li>🧠 Theoretical Foundation
-General Equation of Motion:
-𝑓
-𝑟
-𝑎
-𝑐
-𝑑
-2
-𝑡
-ℎ
-𝑒
-𝑡
-𝑎
-𝑑
-𝑡
-2
-+
-𝑏
-𝑒
-𝑡
-𝑎
-𝑓
-𝑟
-𝑎
-𝑐
-𝑑
-𝑡
-ℎ
-𝑒
-𝑡
-𝑎
-𝑑
-𝑡
-+
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-0
-2
-𝑠
-𝑖
-𝑛
-(
-𝑡
-ℎ
-𝑒
-𝑡
-𝑎
-)
-=
-𝐴
-𝑐
-𝑜
-𝑠
-(
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-𝑡
-)
-fracd 
-2
- thetadt 
-2
- +
-beta
-fracdthetadt+
-omega 
-0
-2
-​</li>
-</ol>
-<p>sin(
-theta)=A
-cos(
-omegat)
-Where:</p>
-<p>𝜃
-(
-𝑡
-)
-θ(t) — angular displacement,</p>
-<p>𝛽
-β — damping coefficient,</p>
-<p>𝜔
-0
-ω 
-0
-​
-  — natural frequency of the pendulum,</p>
-<p>𝐴
-cos
-⁡
-(
-𝜔
-𝑡
-)
-Acos(ωt) — periodic driving force.</p>
-<p>Small Angle Approximation:
-When 
-𝜃
-≪
-1
-θ≪1, we can approximate 
-sin
-⁡
-(
-𝜃
-)
-≈
-𝜃
-sin(θ)≈θ, giving us a linear equation:</p>
-<p>𝑓
-𝑟
-𝑎
-𝑐
-𝑑
-2
-𝑡
-ℎ
-𝑒
-𝑡
-𝑎
-𝑑
-𝑡
-2
-+
-𝑏
-𝑒
-𝑡
-𝑎
-𝑓
-𝑟
-𝑎
-𝑐
-𝑑
-𝑡
-ℎ
-𝑒
-𝑡
-𝑎
-𝑑
-𝑡
-+
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-0
-2
-𝑡
-ℎ
-𝑒
-𝑡
-𝑎
-=
-𝐴
-𝑐
-𝑜
-𝑠
-(
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-𝑡
-)
-fracd 
-2
- thetadt 
-2
- +
-beta
-fracdthetadt+
-omega 
-0
-2
-​</p>
-<p>theta=A
-cos(
-omegat)
-The general solution includes:</p>
-<p>A transient part (decaying oscillations),</p>
-<p>A steady-state part (driven response).</p>
-<p>𝜃
-(
-𝑡
-)
-=
-𝑒
-−
-𝑓
-𝑟
-𝑎
-𝑐
-𝑏
-𝑒
-𝑡
-𝑎
-2
-𝑡
-𝐶
-cos
-⁡
-(
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-𝑑
-𝑡
-+
-𝜙
-)
-+
-𝑓
-𝑟
-𝑎
-𝑐
-𝐴
-𝑠
-𝑞
-𝑟
-𝑡
-(
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-0
-2
-−
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-2
-)
-2
-+
-(
-𝑏
-𝑒
-𝑡
-𝑎
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-)
-2
-cos
-⁡
-(
-𝑜
-𝑚
-𝑒
-𝑔
-𝑎
-𝑡
-−
-𝑑
-𝑒
-𝑙
-𝑡
-𝑎
-)
-θ(t)=e 
-−fracbeta2t
- Ccos(
-omega 
-d
-​
- t+ϕ)+
-fracAsqrt(omega 
-0
-2
-​
- −omega 
-2
- ) 
-2
- +(betaomega) 
-2
- cos(
-omegat−
-delta)
-2. ⚙️ Analysis of Dynamics
-Parameter Effects:
-Damping 
-𝛽
-β — suppresses motion, affects decay rate.</p>
-<p>Driving Amplitude 
-𝐴
-A — larger energy input, can induce chaos.</p>
-<p>Driving Frequency 
-𝜔
-ω — resonance occurs when 
-𝜔
-≈
-𝜔
-0
-ω≈ω 
-0
-​
- .</p>
-<p>Transition to Chaos:
-At low forcing: regular oscillations,</p>
-<p>Increasing 
-𝐴
-A and/or changing 
-𝜔
-ω: quasiperiodic or chaotic behavior.</p>
-<p>Chaos: extreme sensitivity to initial conditions, non-repeating patterns.</p>
-<ol>
-<li>🛠️ Real-World Applications
-This model applies to:</li>
-</ol>
-<p>Suspension bridges — risk of collapse from resonance (e.g., Tacoma Narrows Bridge),</p>
-<p>Driven RLC circuits — electrical analogs,</p>
-<p>Energy harvesting — from ambient vibration,</p>
-<p>Biomechanics — modeling walking or limb oscillations.</p>
-<ol>
-<li>💻 Python Implementation: Simulation &amp; Visualization
-Code:
+<h1 id="investigating-the-dynamics-of-a-forced-damped-pendulum">Investigating the Dynamics of a Forced Damped Pendulum</h1>
+<h2 id="motivation">🎯 Motivation</h2>
+<p>The forced damped pendulum is a classic nonlinear system exhibiting rich behavior—from simple oscillations to chaos. Understanding this system allows us to explore mechanical resonance, nonlinear dynamics, and real-world systems like suspension bridges and electrical circuits.</p>
+<hr/>
+<h2 id="1-theoretical-background">📘 1. Theoretical Background</h2>
+<h3 id="equation-of-motion">Equation of Motion</h3>
+<div class="arithmatex">\[
+\frac{d^2\theta}{dt^2} + \beta \frac{d\theta}{dt} + \omega_0^2 \sin(\theta) = A \cos(\omega t)
+\]</div>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\( \theta(t) \)</span>: angle,</li>
+<li><span class="arithmatex">\( \beta \)</span>: damping coefficient,</li>
+<li><span class="arithmatex">\( \omega_0 \)</span>: natural frequency,</li>
+<li><span class="arithmatex">\( A \)</span>: driving amplitude,</li>
+<li><span class="arithmatex">\( \omega \)</span>: driving frequency.</li>
+</ul>
+<hr/>
+<h3 id="small-angle-approximation">Small-Angle Approximation</h3>
+<p>For small <span class="arithmatex">\( \theta \)</span>, we use <span class="arithmatex">\( \sin(\theta) \approx \theta \)</span>:</p>
+<div class="arithmatex">\[
+\frac{d^2\theta}{dt^2} + \beta \frac{d\theta}{dt} + \omega_0^2 \theta = A \cos(\omega t)
+\]</div>
+<p>General solution:</p>
+<div class="arithmatex">\[
+\theta(t) = e^{-\frac{\beta}{2}t}C \cos(\omega_d t + \phi) + \frac{A}{\sqrt{(\omega_0^2 - \omega^2)^2 + (\beta \omega)^2}} \cos(\omega t - \delta)
+\]</div>
+<hr/>
+<h2 id="2-dynamics-analysis">🔍 2. Dynamics Analysis</h2>
+<ul>
+<li><strong>Damping <span class="arithmatex">\( \beta \)</span></strong>: reduces amplitude over time.</li>
+<li><strong>Driving amplitude <span class="arithmatex">\( A \)</span></strong>: larger amplitude increases energy.</li>
+<li><strong>Driving frequency <span class="arithmatex">\( \omega \)</span></strong>: resonance occurs near <span class="arithmatex">\( \omega_0 \)</span>.</li>
+</ul>
+<p><strong>At high amplitudes or specific frequencies, chaos can emerge.</strong></p>
+<hr/>
+<h2 id="3-real-world-applications">🏗️ 3. Real-World Applications</h2>
+<ul>
+<li><strong>Suspension bridges</strong> — avoid resonance (e.g., Tacoma Narrows Bridge).</li>
+<li><strong>Oscillating RLC circuits</strong> — exact analogs of this system.</li>
+<li><strong>Human biomechanics</strong> — models for walking and limb movement.</li>
+<li><strong>Energy harvesting</strong> — from vibrations using piezoelectric materials.</li>
+</ul>
+<hr/>
+<h2 id="4-python-simulation">💻 4. Python Simulation</h2>
+<h3 id="parameters">Parameters:</h3>
+<p>```python
+beta = 0.5       # damping
+A = 1.2          # driving amplitude
+omega = 2/3      # driving frequency
+omega0 = 1.5     # natural frequency
+ODE Definition &amp; Solver:
 python
 Copy
 Edit
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import solve_ivp</li>
-</ol>
-<h1 id="parameters">Parameters</h1>
-<p>beta = 0.5       # Damping coefficient
-A = 1.2          # Driving force amplitude
-omega = 2/3      # Driving frequency
-omega0 = 1.5     # Natural frequency</p>
-<h1 id="ode-system">ODE System</h1>
+from scipy.integrate import solve_ivp</p>
 <p>def pendulum(t, y):
     theta, omega_theta = y
-    dydt = [omega_theta, -beta * omega_theta - omega0**2 * np.sin(theta) + A * np.cos(omega * t)]
-    return dydt</p>
-<h1 id="initial-conditions">Initial conditions</h1>
+    return [omega_theta, -beta * omega_theta - omega0**2 * np.sin(theta) + A * np.cos(omega * t)]</p>
 <p>y0 = [0.2, 0.0]
 t_eval = np.linspace(0, 100, 5000)</p>
-<h1 id="solve-ode">Solve ODE</h1>
-<p>sol = solve_ivp(pendulum, [0, 100], y0, t_eval=t_eval, method='RK45')</p>
-<h1 id="angular-displacement-over-time">Angular displacement over time</h1>
-<p>plt.figure(figsize=(10, 4))
+<p>sol = solve_ivp(pendulum, [0, 100], y0, t_eval=t_eval)
+Plotting Motion:
+python
+Copy
+Edit
 plt.plot(sol.t, sol.y[0])
+plt.title('Angle θ vs Time')
 plt.xlabel('Time')
-plt.ylabel('Angle θ (rad)')
-plt.title('Forced Damped Pendulum Motion')
+plt.ylabel('θ (rad)')
 plt.grid(True)
 plt.show()
 Phase Portrait:
 python
 Copy
 Edit
-plt.figure(figsize=(6, 6))
-plt.plot(sol.y[0], sol.y[1], lw=0.5)
-plt.xlabel('Angle θ (rad)')
-plt.ylabel('Angular Velocity')
+plt.plot(sol.y[0], sol.y[1])
 plt.title('Phase Portrait')
+plt.xlabel('θ')
+plt.ylabel('dθ/dt')
 plt.grid(True)
 plt.show()
 Poincaré Section:
@@ -565,40 +284,32 @@ python
 Copy
 Edit
 T_drive = 2 * np.pi / omega
-sampled_times = np.arange(0, 100, T_drive)
-sampled_theta = np.interp(sampled_times, sol.t, sol.y[0])
-sampled_omega = np.interp(sampled_times, sol.t, sol.y[1])</p>
-<p>plt.figure(figsize=(6, 6))
-plt.scatter(sampled_theta, sampled_omega, s=2)
-plt.xlabel('Angle θ (rad)')
-plt.ylabel('Angular Velocity')
+sample_times = np.arange(0, 100, T_drive)
+theta_samples = np.interp(sample_times, sol.t, sol.y[0])
+omega_samples = np.interp(sample_times, sol.t, sol.y[1])</p>
+<p>plt.scatter(theta_samples, omega_samples, s=2)
 plt.title('Poincaré Section')
+plt.xlabel('θ')
+plt.ylabel('dθ/dt')
 plt.grid(True)
 plt.show()
-📈 Interpretation of Results
-Regular oscillations show as smooth curves and discrete dots in Poincaré sections.</p>
-<p>Chaotic behavior appears as scattered, unpredictable points—sign of a sensitive, nonlinear system.</p>
-<p>The phase portrait reveals the structure of the motion (limit cycles, attractors, chaos).</p>
-<p>Poincaré maps reduce continuous-time dynamics to a discrete map, useful for visualizing periodicity or chaos.</p>
-<p>📌 Limitations &amp; Extensions
-Limitations:
-Assumes idealized physical model (no frictional torque variations).</p>
-<p>Sinusoidal driving force only.</p>
-<p>Possible Extensions:
-Introduce nonlinear damping (e.g., quadratic damping),</p>
-<p>Replace cosine forcing with non-periodic or stochastic inputs,</p>
-<p>Explore bifurcation diagrams for system behavior vs. parameter changes,</p>
-<p>Add 3D visualizations (e.g., 
-𝜃
-,
-𝜃
-˙
-,
-𝑡
-θ, 
-θ
-˙
- ,t).</p>
+📊 5. Interpretation
+Low amplitude: periodic oscillations.</p>
+<p>Medium: possible resonance.</p>
+<p>High: chaotic, unpredictable motion.</p>
+<p>Poincaré sections and phase diagrams visually confirm this.</p>
+<p>🧪 6. Limitations &amp; Extensions
+Limitations:</p>
+<p>Assumes perfect damping and sinusoidal force.</p>
+<p>Real systems have friction and complex boundaries.</p>
+<p>Extensions:</p>
+<p>Add nonlinear damping (e.g., air drag).</p>
+<p>Use random or aperiodic driving.</p>
+<p>Plot bifurcation diagrams with changing 
+𝐴
+A.</p>
+<p>✅ Conclusion
+The forced damped pendulum is a rich, educational system for exploring regular and chaotic motion. This project bridges theory and simulation, providing both conceptual and practical understanding of nonlinear dynamics.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
