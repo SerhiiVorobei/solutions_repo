@@ -42,6 +42,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../..">Introduction</a>
 </li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../to%20do%20/">To do </a>
+</li>
+</ul>
 <p class="caption"><span class="caption-text">1 Physics</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal current">1 Mechanics</a>
@@ -171,62 +175,430 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-2">Problem 2</h1>
-<h1 id="investigation-of-the-dynamics-of-a-forced-damped-pendulum">🌀 Investigation of the Dynamics of a Forced Damped Pendulum</h1>
-<h2 id="theoretical-foundation">📚 Theoretical Foundation</h2>
-<p>The equation of motion for a pendulum with damping and an external force is given by:</p>
-<div class="arithmatex">\[
-\frac{d^2\theta}{dt^2} + \gamma \frac{d\theta}{dt} + \omega_0^2 \sin(\theta) = A \cos(\omega t)
-\]</div>
-<p>For small angles:<br/>
-[
-\sin(\theta) \approx \theta
-]</p>
-<p>This allows the analysis of <strong>damped harmonic oscillations</strong>, <strong>resonance</strong>, and even <strong>chaos</strong> by varying parameters.</p>
-<hr/>
-<h2 id="python-model-of-the-pendulum">🧪 Python Model of the Pendulum</h2>
-<p>A numerical solution is obtained using the Runge-Kutta method (4th order) from the <code>scipy.integrate.solve_ivp</code> package.</p>
-<p>Model parameters:
-- γ (damping): <code>0.1</code>
-- ω₀ (natural frequency): <code>1.5</code>
-- A (amplitude of the external force): <code>1.2</code>
-- ω (driving frequency): <code>2.0</code></p>
-<blockquote>
-<p><strong>Code can be found in the repository or below upon request.</strong></p>
-</blockquote>
-<hr/>
-<h2 id="visualization-of-results">📊 Visualization of Results</h2>
-<h3 id="1-angle-vs-time">1️⃣ Angle vs Time</h3>
-<h2 id="_1"><img alt="Angle vs Time" src="time_series_theta.png"/></h2>
-<h3 id="2-phase-portrait">2️⃣ Phase Portrait</h3>
-<p>(θ vs ω — shows the system's behavior in the state space)<br/>
-<img alt="Phase Portrait" src="phase_portrait.png"/></p>
-<hr/>
-<h3 id="3-poincare-section">3️⃣ Poincaré Section</h3>
-<p>(Sampling the position and velocity of the pendulum at certain moments — a fractal structure appears when chaos emerges)<br/>
-<img alt="Poincaré Section" src="poincare_section.png"/></p>
-<hr/>
-<h2 id="conclusions">📌 Conclusions</h2>
-<ul>
-<li>The system demonstrates <strong>various motion regimes</strong>: regular, quasiperiodic, and chaotic.</li>
-<li>Under certain conditions, <strong>resonance</strong> occurs, increasing the amplitude.</li>
-<li>When changing parameters, <strong>chaos</strong> appears — an example of complex nonlinear dynamics.</li>
-</ul>
-<hr/>
-<h2 id="applications">⚙️ Applications</h2>
-<p>This model can be applied in:
-- engineering (vibrations, damping),
-- electronics (RLC circuits),
-- biomechanics (modeling rhythmic patterns),
-- energy harvesting (smoothing oscillations).</p>
-<hr/>
-<h2 id="tools">🛠 Tools</h2>
-<ul>
-<li><strong>Python 3</strong></li>
-<li><code>NumPy</code>, <code>SciPy</code>, <code>Matplotlib</code></li>
-<li>Visual Studio Code</li>
-<li>Git, GitHub Pages</li>
-</ul>
+<p>🎓 Investigating the Dynamics of a Forced Damped Pendulum
+🔍 Motivation
+The forced damped pendulum is a classic example of a nonlinear dynamical system. Due to the interplay between restoring forces, damping, and external periodic driving, it exhibits a wide range of behaviors—from simple harmonic motion to rich, chaotic dynamics.</p>
+<p>This system models real-world phenomena such as:</p>
+<p>Vibrating mechanical systems (e.g., bridges),</p>
+<p>Driven electrical circuits (RLC circuits),</p>
+<p>Human gait modeling,</p>
+<p>Energy harvesting mechanisms.</p>
+<ol>
+<li>🧠 Theoretical Foundation
+General Equation of Motion:
+𝑓
+𝑟
+𝑎
+𝑐
+𝑑
+2
+𝑡
+ℎ
+𝑒
+𝑡
+𝑎
+𝑑
+𝑡
+2
++
+𝑏
+𝑒
+𝑡
+𝑎
+𝑓
+𝑟
+𝑎
+𝑐
+𝑑
+𝑡
+ℎ
+𝑒
+𝑡
+𝑎
+𝑑
+𝑡
++
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+0
+2
+𝑠
+𝑖
+𝑛
+(
+𝑡
+ℎ
+𝑒
+𝑡
+𝑎
+)
+=
+𝐴
+𝑐
+𝑜
+𝑠
+(
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+𝑡
+)
+fracd 
+2
+ thetadt 
+2
+ +
+beta
+fracdthetadt+
+omega 
+0
+2
+​</li>
+</ol>
+<p>sin(
+theta)=A
+cos(
+omegat)
+Where:</p>
+<p>𝜃
+(
+𝑡
+)
+θ(t) — angular displacement,</p>
+<p>𝛽
+β — damping coefficient,</p>
+<p>𝜔
+0
+ω 
+0
+​
+  — natural frequency of the pendulum,</p>
+<p>𝐴
+cos
+⁡
+(
+𝜔
+𝑡
+)
+Acos(ωt) — periodic driving force.</p>
+<p>Small Angle Approximation:
+When 
+𝜃
+≪
+1
+θ≪1, we can approximate 
+sin
+⁡
+(
+𝜃
+)
+≈
+𝜃
+sin(θ)≈θ, giving us a linear equation:</p>
+<p>𝑓
+𝑟
+𝑎
+𝑐
+𝑑
+2
+𝑡
+ℎ
+𝑒
+𝑡
+𝑎
+𝑑
+𝑡
+2
++
+𝑏
+𝑒
+𝑡
+𝑎
+𝑓
+𝑟
+𝑎
+𝑐
+𝑑
+𝑡
+ℎ
+𝑒
+𝑡
+𝑎
+𝑑
+𝑡
++
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+0
+2
+𝑡
+ℎ
+𝑒
+𝑡
+𝑎
+=
+𝐴
+𝑐
+𝑜
+𝑠
+(
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+𝑡
+)
+fracd 
+2
+ thetadt 
+2
+ +
+beta
+fracdthetadt+
+omega 
+0
+2
+​</p>
+<p>theta=A
+cos(
+omegat)
+The general solution includes:</p>
+<p>A transient part (decaying oscillations),</p>
+<p>A steady-state part (driven response).</p>
+<p>𝜃
+(
+𝑡
+)
+=
+𝑒
+−
+𝑓
+𝑟
+𝑎
+𝑐
+𝑏
+𝑒
+𝑡
+𝑎
+2
+𝑡
+𝐶
+cos
+⁡
+(
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+𝑑
+𝑡
++
+𝜙
+)
++
+𝑓
+𝑟
+𝑎
+𝑐
+𝐴
+𝑠
+𝑞
+𝑟
+𝑡
+(
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+0
+2
+−
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+2
+)
+2
++
+(
+𝑏
+𝑒
+𝑡
+𝑎
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+)
+2
+cos
+⁡
+(
+𝑜
+𝑚
+𝑒
+𝑔
+𝑎
+𝑡
+−
+𝑑
+𝑒
+𝑙
+𝑡
+𝑎
+)
+θ(t)=e 
+−fracbeta2t
+ Ccos(
+omega 
+d
+​
+ t+ϕ)+
+fracAsqrt(omega 
+0
+2
+​
+ −omega 
+2
+ ) 
+2
+ +(betaomega) 
+2
+ cos(
+omegat−
+delta)
+2. ⚙️ Analysis of Dynamics
+Parameter Effects:
+Damping 
+𝛽
+β — suppresses motion, affects decay rate.</p>
+<p>Driving Amplitude 
+𝐴
+A — larger energy input, can induce chaos.</p>
+<p>Driving Frequency 
+𝜔
+ω — resonance occurs when 
+𝜔
+≈
+𝜔
+0
+ω≈ω 
+0
+​
+ .</p>
+<p>Transition to Chaos:
+At low forcing: regular oscillations,</p>
+<p>Increasing 
+𝐴
+A and/or changing 
+𝜔
+ω: quasiperiodic or chaotic behavior.</p>
+<p>Chaos: extreme sensitivity to initial conditions, non-repeating patterns.</p>
+<ol>
+<li>🛠️ Real-World Applications
+This model applies to:</li>
+</ol>
+<p>Suspension bridges — risk of collapse from resonance (e.g., Tacoma Narrows Bridge),</p>
+<p>Driven RLC circuits — electrical analogs,</p>
+<p>Energy harvesting — from ambient vibration,</p>
+<p>Biomechanics — modeling walking or limb oscillations.</p>
+<ol>
+<li>💻 Python Implementation: Simulation &amp; Visualization
+Code:
+python
+Copy
+Edit
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp</li>
+</ol>
+<h1 id="parameters">Parameters</h1>
+<p>beta = 0.5       # Damping coefficient
+A = 1.2          # Driving force amplitude
+omega = 2/3      # Driving frequency
+omega0 = 1.5     # Natural frequency</p>
+<h1 id="ode-system">ODE System</h1>
+<p>def pendulum(t, y):
+    theta, omega_theta = y
+    dydt = [omega_theta, -beta * omega_theta - omega0**2 * np.sin(theta) + A * np.cos(omega * t)]
+    return dydt</p>
+<h1 id="initial-conditions">Initial conditions</h1>
+<p>y0 = [0.2, 0.0]
+t_eval = np.linspace(0, 100, 5000)</p>
+<h1 id="solve-ode">Solve ODE</h1>
+<p>sol = solve_ivp(pendulum, [0, 100], y0, t_eval=t_eval, method='RK45')</p>
+<h1 id="angular-displacement-over-time">Angular displacement over time</h1>
+<p>plt.figure(figsize=(10, 4))
+plt.plot(sol.t, sol.y[0])
+plt.xlabel('Time')
+plt.ylabel('Angle θ (rad)')
+plt.title('Forced Damped Pendulum Motion')
+plt.grid(True)
+plt.show()
+Phase Portrait:
+python
+Copy
+Edit
+plt.figure(figsize=(6, 6))
+plt.plot(sol.y[0], sol.y[1], lw=0.5)
+plt.xlabel('Angle θ (rad)')
+plt.ylabel('Angular Velocity')
+plt.title('Phase Portrait')
+plt.grid(True)
+plt.show()
+Poincaré Section:
+python
+Copy
+Edit
+T_drive = 2 * np.pi / omega
+sampled_times = np.arange(0, 100, T_drive)
+sampled_theta = np.interp(sampled_times, sol.t, sol.y[0])
+sampled_omega = np.interp(sampled_times, sol.t, sol.y[1])</p>
+<p>plt.figure(figsize=(6, 6))
+plt.scatter(sampled_theta, sampled_omega, s=2)
+plt.xlabel('Angle θ (rad)')
+plt.ylabel('Angular Velocity')
+plt.title('Poincaré Section')
+plt.grid(True)
+plt.show()
+📈 Interpretation of Results
+Regular oscillations show as smooth curves and discrete dots in Poincaré sections.</p>
+<p>Chaotic behavior appears as scattered, unpredictable points—sign of a sensitive, nonlinear system.</p>
+<p>The phase portrait reveals the structure of the motion (limit cycles, attractors, chaos).</p>
+<p>Poincaré maps reduce continuous-time dynamics to a discrete map, useful for visualizing periodicity or chaos.</p>
+<p>📌 Limitations &amp; Extensions
+Limitations:
+Assumes idealized physical model (no frictional torque variations).</p>
+<p>Sinusoidal driving force only.</p>
+<p>Possible Extensions:
+Introduce nonlinear damping (e.g., quadratic damping),</p>
+<p>Replace cosine forcing with non-periodic or stochastic inputs,</p>
+<p>Explore bifurcation diagrams for system behavior vs. parameter changes,</p>
+<p>Add 3D visualizations (e.g., 
+𝜃
+,
+𝜃
+˙
+,
+𝑡
+θ, 
+θ
+˙
+ ,t).</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
