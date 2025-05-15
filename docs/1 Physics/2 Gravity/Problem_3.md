@@ -1,150 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Trajectories of a Freely Released Payload Near Earth</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        h1, h2 {
-            color: #2c3e50;
-        }
-        code {
-            background: #e9ecef;
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-size: 90%;
-        }
-        pre {
-            background-color: #e9ecef;
-            padding: 10px;
-            border-radius: 6px;
-            overflow-x: auto;
-        }
-    </style>
-</head>
-<body>
+# Trajectories of a Freely Released Payload Near Earth
 
-<h1>Trajectories of a Freely Released Payload Near Earth</h1>
+## 🚀 Motivation
 
-<h2>1. Motivation</h2>
-<p>
-When a payload is released from a moving spacecraft in Earth’s vicinity, the resulting path depends on the velocity vector at the moment of release. These trajectories—elliptical, parabolic, or hyperbolic—determine whether the object enters orbit, reenters Earth’s atmosphere, or escapes Earth’s gravity.
-</p>
-<p>
-Understanding these dynamics is crucial in mission planning for satellites, space stations, and deep-space probes.
-</p>
+When an object is released from a moving rocket near Earth, its trajectory depends critically on the initial conditions (position, velocity, altitude) and Earth's gravity. The resulting motion can be elliptical (orbit), parabolic (escape trajectory), or hyperbolic (escape with excess velocity). Understanding these trajectories is essential for space missions, including satellite deployment, orbital insertion, and reentry planning.
 
-<h2>2. Physical and Mathematical Background</h2>
-<p><strong>Newton's Law of Universal Gravitation:</strong></p>
-<pre>F = G * M * m / r²</pre>
+---
 
-<p><strong>Gravitational Acceleration:</strong></p>
-<pre>⃗a = -GM * ⃗r / |r|³</pre>
+## 1. Theoretical Background
 
-<ul>
-    <li>G: Gravitational constant ≈ 6.674 × 10⁻¹¹ Nm²/kg²</li>
-    <li>M: Mass of Earth ≈ 5.972 × 10²⁴ kg</li>
-    <li>r: Distance from Earth's center</li>
-</ul>
+### Newton’s Law of Universal Gravitation
 
-<p><strong>Total Specific Mechanical Energy:</strong></p>
-<pre>ε = v²/2 − GM/r</pre>
+The gravitational force acting on the payload of mass \(m\) at position vector \(\mathbf{r}\) relative to Earth's center is:
 
-<ul>
-    <li>ε &lt; 0: Elliptical</li>
-    <li>ε = 0: Parabolic</li>
-    <li>ε &gt; 0: Hyperbolic</li>
-</ul>
+\[
+\mathbf{F} = -\frac{G M_e m}{r^3} \mathbf{r}
+\]
 
-<h2>3. Numerical Simulation of Payload Trajectories</h2>
-<p>Python Simulation:</p>
-<pre><code>import numpy as np
+Where:
+
+- \(G = 6.67430 \times 10^{-11} \, \text{m}^3\text{kg}^{-1}\text{s}^{-2}\) — gravitational constant,
+- \(M_e = 5.972 \times 10^{24} \, \text{kg}\) — Earth's mass,
+- \(r = |\mathbf{r}|\) — distance from Earth's center.
+
+### Equation of Motion
+
+Using Newton's second law:
+
+\[
+m \mathbf{\ddot{r}} = \mathbf{F} \implies \mathbf{\ddot{r}} = -\frac{G M_e}{r^3} \mathbf{r}
+\]
+
+This second-order vector differential equation governs the motion of the payload.
+
+---
+
+## 2. Types of Trajectories
+
+The nature of the orbit depends on the total mechanical energy \(E\):
+
+\[
+E = \frac{1}{2} m v^2 - \frac{G M_e m}{r}
+\]
+
+- **Elliptical Orbit:** \(E < 0\) — payload is gravitationally bound.
+- **Parabolic Trajectory:** \(E = 0\) — payload reaches escape velocity.
+- **Hyperbolic Trajectory:** \(E > 0\) — payload escapes with excess kinetic energy.
+
+---
+
+## 3. Numerical Simulation Approach
+
+We will:
+
+- Use the initial position and velocity of the payload relative to Earth's center.
+- Numerically integrate the equations of motion using the 4th order Runge-Kutta method via `scipy.integrate.solve_ivp`.
+- Simulate the trajectory over a given time span.
+- Visualize trajectories in 2D for clarity.
+
+---
+
+## 4. Python Implementation
+
+```python
+import numpy as np
 import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
 
 # Constants
-G = 6.67430e-11  # m^3/kg/s^2
-M_earth = 5.972e24  # kg
-R_earth = 6.371e6  # m
+G = 6.67430e-11          # gravitational constant, m^3/kg/s^2
+M_e = 5.972e24           # Earth mass, kg
+R_e = 6.371e6            # Earth radius, m
 
-# Function to calculate acceleration
-def acceleration(r):
-    norm_r = np.linalg.norm(r)
-    return -G * M_earth * r / norm_r**3
-
-# Euler's method for orbital trajectory
-def simulate_trajectory(r0, v0, dt=1, t_max=10000):
-    r = r0
-    v = v0
-    positions = [r.copy()]
+def equations(t, y):
+    # y = [x, y, vx, vy]
+    rx, ry, vx, vy = y
+    r = np.sqrt(rx**2 + ry**2)
     
-    for _ in range(int(t_max / dt)):
-        a = acceleration(r)
-        v += a * dt
-        r += v * dt
-        positions.append(r.copy())
-        if np.linalg.norm(r) < R_earth:
-            break
+    ax = -G * M_e * rx / r**3
+    ay = -G * M_e * ry / r**3
     
-    return np.array(positions)
+    return [vx, vy, ax, ay]
 
 # Initial conditions
-altitude = 400e3  # 400 km
-r0 = np.array([R_earth + altitude, 0])
-v_circular = np.sqrt(G * M_earth / np.linalg.norm(r0))
+# Example: Payload released from 400 km altitude with initial velocity
+altitude = 400e3  # 400 km above Earth's surface
+initial_speed = 7800  # approx low Earth orbit speed in m/s
 
-# Try different velocities
-velocity_cases = [
-    ("Suborbital", v_circular * 0.9),
-    ("Circular Orbit", v_circular),
-    ("Elliptical Orbit", v_circular * 1.1),
-    ("Escape", np.sqrt(2) * v_circular)
-]
+# Initial position (x, y)
+x0 = R_e + altitude
+y0 = 0.0
 
-plt.figure(figsize=(10, 10))
+# Initial velocity (vx, vy)
+vx0 = 0.0
+vy0 = initial_speed
+
+# Initial state vector
+y0_vec = [x0, y0, vx0, vy0]
+
+# Time span for simulation (seconds)
+t_span = (0, 6000)  # simulate for 6000 seconds (~1.67 hours)
+t_eval = np.linspace(*t_span, 5000)
+
+# Solve ODE using Runge-Kutta method
+sol = solve_ivp(equations, t_span, y0_vec, t_eval=t_eval, rtol=1e-9, atol=1e-9)
+
+# Extract solution
+x = sol.y[0]
+y = sol.y[1]
+
+# Earth outline for reference
 theta = np.linspace(0, 2*np.pi, 100)
-plt.plot(R_earth * np.cos(theta), R_earth * np.sin(theta), 'k', label='Earth')
+earth_x = R_e * np.cos(theta)
+earth_y = R_e * np.sin(theta)
 
-for label, v0_mag in velocity_cases:
-    v0 = np.array([0, v0_mag])
-    traj = simulate_trajectory(r0.copy(), v0.copy(), dt=1, t_max=10000)
-    plt.plot(traj[:,0], traj[:,1], label=label)
-
+# Plot trajectory and Earth
+plt.figure(figsize=(8,8))
+plt.plot(earth_x, earth_y, 'b', label='Earth')
+plt.plot(x, y, 'r', label='Payload trajectory')
+plt.xlabel('x (m)')
+plt.ylabel('y (m)')
+plt.title('Trajectory of Payload Released Near Earth')
 plt.axis('equal')
-plt.xlabel("x [m]")
-plt.ylabel("y [m]")
-plt.title("Payload Trajectories Released Near Earth")
-plt.legend()
 plt.grid(True)
-plt.show()</code></pre>
-
-<h2>4. Interpretation of Results</h2>
-<ul>
-    <li><strong>Suborbital:</strong> The payload falls back to Earth, possibly reentering.</li>
-    <li><strong>Circular Orbit:</strong> The payload remains in stable orbit.</li>
-    <li><strong>Elliptical Orbit:</strong> The payload enters a higher apogee orbit.</li>
-    <li><strong>Escape Trajectory:</strong> The payload leaves Earth’s gravitational field.</li>
-</ul>
-
-<p><strong>Escape Velocity:</strong></p>
-<pre>v_esc = sqrt(2GM / r) ≈ 11.2 km/s at surface</pre>
-
-<h2>5. Applications in Space Missions</h2>
-<ul>
-    <li><strong>Orbital Insertion:</strong> Payloads must match circular/elliptical criteria.</li>
-    <li><strong>Reentry Capsules:</strong> Suborbital trajectories ensure atmospheric return.</li>
-    <li><strong>Interplanetary Missions:</strong> Escape trajectories enable transfers to other planets.</li>
-</ul>
-
-<h2>6. Conclusion</h2>
-<p>
-This analysis demonstrates how classical mechanics and numerical methods provide insights into orbital dynamics. Understanding the nature of a trajectory based on velocity and position at release is fundamental in aerospace engineering and astrodynamics.
-</p>
-
-</body>
-</html>
+plt.legend()
+plt.show()
