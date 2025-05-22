@@ -6,13 +6,13 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../../img/favicon.ico" rel="shortcut icon"/>
-<title>🚀 Problem 3: Trajectories of a Freely Released Payload Near Earth - Physics and Mathematics</title>
+<title>Trajectories of a Freely Released Payload Near Earth - Physics and Mathematics</title>
 <link href="../../../css/theme.css" rel="stylesheet"/>
 <link href="../../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "\ud83d\ude80 Problem 3: Trajectories of a Freely Released Payload Near Earth";
+        var mkdocs_page_name = "Trajectories of a Freely Released Payload Near Earth";
         var mkdocs_page_input_path = "1 Physics/2 Gravity/Problem_3.md";
         var mkdocs_page_url = null;
       </script>
@@ -62,21 +62,23 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2: Escape Velocities and Cosmic Velocities</a>
 </li>
-<li class="toctree-l2 current"><a class="reference internal current" href="#">🚀 Problem 3: Trajectories of a Freely Released Payload Near Earth</a>
+<li class="toctree-l2 current"><a class="reference internal current" href="#">Trajectories of a Freely Released Payload Near Earth</a>
 <ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="#motivation">🎯 Motivation</a>
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#physics-background">🌍 Physics Background</a>
+<li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#types-of-trajectories">Types of trajectories:</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#trajectory-types-based-on-velocity">✨ Trajectory Types Based on Velocity</a>
+</ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-simulation-code">💻 Python Simulation Code</a>
+<li class="toctree-l3"><a class="reference internal" href="#numerical-simulation">Numerical Simulation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-conditions">Initial conditions:</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#output-simulation-results">📈 Output (Simulation Results)</a>
+</ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#applications">🚀 Applications</a>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#references">📚 References</a>
+<li class="toctree-l3"><a class="reference internal" href="#python-code">Python Code</a>
 </li>
 </ul>
 </li>
@@ -181,7 +183,7 @@
 <li><a aria-label="Docs" class="icon icon-home" href="../../.."></a></li>
 <li class="breadcrumb-item">1 Physics</li>
 <li class="breadcrumb-item">2 Gravity</li>
-<li class="breadcrumb-item active">🚀 Problem 3: Trajectories of a Freely Released Payload Near Earth</li>
+<li class="breadcrumb-item active">Trajectories of a Freely Released Payload Near Earth</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -189,132 +191,132 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-3-trajectories-of-a-freely-released-payload-near-earth">🚀 Problem 3: Trajectories of a Freely Released Payload Near Earth</h1>
-<hr/>
-<h2 id="motivation">🎯 Motivation</h2>
-<p>When a payload is released from a spacecraft near Earth, its motion is governed by gravity. Based on its speed and direction, the payload can:</p>
+<h1 id="trajectories-of-a-freely-released-payload-near-earth">Trajectories of a Freely Released Payload Near Earth</h1>
+<h2 id="motivation">Motivation</h2>
+<p>When an object is released from a moving rocket near Earth, its trajectory depends on initial conditions (position, velocity, altitude) and Earth's gravitational forces. Understanding these trajectories is crucial for space missions like satellite deployment or payload return.</p>
+<h2 id="theory">Theory</h2>
+<p>The motion of a payload near Earth is governed by Newton's law of universal gravitation:</p>
+<div class="arithmatex">\[
+\mathbf{F} = -\frac{GMm}{r^3} \mathbf{r}
+\]</div>
+<p>where:<br/>
+- <span class="arithmatex">\(G = 6.67430 \times 10^{-11} \, m^3\,kg^{-1}\,s^{-2}\)</span> — gravitational constant,<br/>
+- <span class="arithmatex">\(M = 5.972 \times 10^{24} \, kg\)</span> — Earth's mass,<br/>
+- <span class="arithmatex">\(m\)</span> — payload mass,<br/>
+- <span class="arithmatex">\(\mathbf{r}\)</span> — position vector from Earth's center,<br/>
+- <span class="arithmatex">\(r = |\mathbf{r}|\)</span>.</p>
+<p>The acceleration of the payload is:</p>
+<div class="arithmatex">\[
+\mathbf{a} = -\frac{GM}{r^3} \mathbf{r}
+\]</div>
+<h3 id="types-of-trajectories">Types of trajectories:</h3>
 <ul>
-<li>Fall back to Earth (suborbital)</li>
-<li>Enter orbit (circular or elliptical)</li>
-<li>Escape Earth's gravity (hyperbolic)</li>
+<li><strong>Elliptical orbit</strong> (<span class="arithmatex">\(0 \leq e &lt; 1\)</span>) — payload is gravitationally bound to Earth.</li>
+<li><strong>Parabolic trajectory</strong> (<span class="arithmatex">\(e = 1\)</span>) — payload travels at exactly escape velocity.</li>
+<li><strong>Hyperbolic trajectory</strong> (<span class="arithmatex">\(e &gt; 1\)</span>) — payload escapes Earth's gravity.</li>
 </ul>
-<p>Understanding this is essential for satellite deployment, reentry planning, and deep-space missions.</p>
 <hr/>
-<h2 id="physics-background">🌍 Physics Background</h2>
-<p>The gravitational force follows Newton's Law:</p>
-<blockquote>
-<p><strong>F = G · M · m / r²</strong> → <strong>a = -G · M / r²</strong></p>
-</blockquote>
-<p>Where:
-- <strong>G</strong> is the gravitational constant
-- <strong>M</strong> is Earth’s mass
-- <strong>r</strong> is the distance from Earth’s center</p>
+<h2 id="numerical-simulation">Numerical Simulation</h2>
+<p>To simulate the payload trajectory, we use the 4th-order Runge-Kutta (RK4) method to integrate the equations of motion numerically.</p>
+<h3 id="initial-conditions">Initial conditions:</h3>
+<ul>
+<li>Initial altitude <span class="arithmatex">\(h\)</span> (e.g., 200 km above Earth’s surface),</li>
+<li>Initial velocity magnitude <span class="arithmatex">\(v_0\)</span> and launch angle <span class="arithmatex">\(\theta\)</span> relative to horizontal,</li>
+<li>Initial position at <span class="arithmatex">\((R_E + h, 0)\)</span> where <span class="arithmatex">\(R_E\)</span> is Earth's radius.</li>
+</ul>
 <hr/>
-<h2 id="trajectory-types-based-on-velocity">✨ Trajectory Types Based on Velocity</h2>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-<th>Shape</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Suborbital (&lt;7.7 km/s)</td>
-<td>Falls back to Earth</td>
-<td>Arc</td>
-</tr>
-<tr>
-<td>Circular (~7.7 km/s)</td>
-<td>Maintains orbit</td>
-<td>Circle</td>
-</tr>
-<tr>
-<td>Escape (≥11.2 km/s)</td>
-<td>Leaves Earth’s gravity</td>
-<td>Hyperbola</td>
-</tr>
-</tbody>
-</table>
-<hr/>
-<h2 id="python-simulation-code">💻 Python Simulation Code</h2>
-<pre><code class="language-python">import numpy as np
-import matplotlib.pyplot as plt
+<h2 id="python-code">Python Code</h2>
+<p>```python
+import numpy as np
+import matplotlib.pyplot as plt</p>
+<h1 id="constants">Constants</h1>
+<p>G = 6.67430e-11        # gravitational constant, m^3/kg/s^2
+M = 5.972e24           # Earth mass, kg
+R_E = 6371000          # Earth radius, m</p>
+<p>def acceleration(r):
+    """Calculate gravitational acceleration at position r."""
+    norm_r = np.linalg.norm(r)
+    return -G * M * r / norm_r**3</p>
+<p>def rk4_step(r, v, dt):
+    """Perform one RK4 integration step."""
+    k1_v = acceleration(r)
+    k1_r = v</p>
+<pre><code>k2_v = acceleration(r + 0.5 * dt * k1_r)
+k2_r = v + 0.5 * dt * k1_v
 
-G = 6.67430e-11
-M = 5.972e24
-R_earth = 6.371e6
+k3_v = acceleration(r + 0.5 * dt * k2_r)
+k3_r = v + 0.5 * dt * k2_v
 
-altitude = 400e3
-r0 = np.array([R_earth + altitude, 0])
+k4_v = acceleration(r + dt * k3_r)
+k4_r = v + dt * k3_v
 
-v_circular = np.sqrt(G * M / np.linalg.norm(r0))
+r_next = r + (dt / 6) * (k1_r + 2*k2_r + 2*k3_r + k4_r)
+v_next = v + (dt / 6) * (k1_v + 2*k2_v + 2*k3_v + k4_v)
 
-initial_velocities = {
-    "Suborbital (5 km/s)": np.array([0, 5e3]),
-    "Circular Orbit (~7.7 km/s)": np.array([0, v_circular]),
-    "Escape (&gt;11 km/s)": np.array([0, 11.2e3])
-}
-
-dt = 1
-t_max = 6000
-
-def simulate_trajectory(r0, v0):
-    r = r0.copy()
-    v = v0.copy()
-    positions = []
-    for _ in range(int(t_max / dt)):
-        r_norm = np.linalg.norm(r)
-        if r_norm &lt;= R_earth:
-            break
-        a = -G * M * r / r_norm**3
-        v += a * dt
-        r += v * dt
-        positions.append(r.copy())
-    return np.array(positions)
-
-plt.figure(figsize=(8, 8))
-theta = np.linspace(0, 2 * np.pi, 500)
-plt.plot(R_earth * np.cos(theta), R_earth * np.sin(theta), 'k', label="Earth")
-
-colors = ['red', 'blue', 'green']
-for (label, v0), color in zip(initial_velocities.items(), colors):
-    trajectory = simulate_trajectory(r0, v0)
-    plt.plot(trajectory[:, 0], trajectory[:, 1], label=label, color=color)
-
-plt.gca().set_aspect('equal')
-plt.title("Trajectories of Released Payloads Near Earth")
-plt.xlabel("X Position (m)")
-plt.ylabel("Y Position (m)")
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.savefig("payload_trajectories.png")
-plt.show()
+return r_next, v_next
 </code></pre>
-<hr/>
-<h2 id="output-simulation-results">📈 Output (Simulation Results)</h2>
-<p>The following image shows how different speeds affect the trajectory of the payload launched from 400 km altitude:</p>
-<p><img alt="Payload Trajectories" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."/></p>
-<blockquote>
-<p>🔺 <em>Note: Base64 content was trimmed here due to length.</em><br/>
-🧩 In реальному файлі я вставлю <strong>повну Base64-версію</strong> зображення.</p>
-</blockquote>
-<hr/>
-<h2 id="applications">🚀 Applications</h2>
-<ul>
-<li>Satellite and ISS deployment</li>
-<li>Reentry capsule planning</li>
-<li>Mission design for interplanetary probes</li>
-</ul>
-<hr/>
-<h2 id="references">📚 References</h2>
-<ul>
-<li>NASA Orbital Mechanics: https://www.nasa.gov/sites/default/files/atoms/files/orbital_mechanics.pdf  </li>
-<li>ESA Spaceflight Dynamics  </li>
-<li><em>Fundamentals of Astrodynamics</em>, Bate, Mueller &amp; White</li>
-</ul>
+<p>def simulate_trajectory(v0, theta_deg, h=200000, t_max=6000, dt=1):
+    """
+    Simulate payload trajectory near Earth.</p>
+<pre><code>Parameters:
+v0          - initial velocity magnitude (m/s)
+theta_deg   - launch angle in degrees relative to horizontal
+h           - initial altitude (m)
+t_max       - simulation duration (s)
+dt          - timestep (s)
+
+Returns:
+numpy array of trajectory points [[x1, y1], [x2, y2], ...]
+"""
+theta = np.radians(theta_deg)
+r = np.array([R_E + h, 0.0])                   # initial position vector
+v = v0 * np.array([np.cos(theta), np.sin(theta)])  # initial velocity vector
+
+trajectory = [r.copy()]
+t = 0
+
+while t &lt; t_max:
+    r, v = rk4_step(r, v, dt)
+    trajectory.append(r.copy())
+    t += dt
+
+    # Stop if payload hits the ground
+    if np.linalg.norm(r) &lt;= R_E:
+        break
+
+return np.array(trajectory)
+</code></pre>
+<h1 id="example-simulations">Example simulations:</h1>
+<h1 id="three-scenarios">Three scenarios:</h1>
+<h1 id="1-sub-orbital-speed-1000-ms-45-degrees-angle">1) Sub-orbital speed (1000 m/s), 45 degrees angle</h1>
+<h1 id="2-orbital-speed-7800-ms-horizontal-0-degrees">2) Orbital speed (~7800 m/s), horizontal (0 degrees)</h1>
+<h1 id="3-above-escape-velocity-12000-ms-horizontal-0-degrees">3) Above escape velocity (~12000 m/s), horizontal (0 degrees)</h1>
+<p>params = [
+    (1000, 45, 'Sub-orbital fall'),
+    (7800, 0, 'Low Earth Orbit'),
+    (12000, 0, 'Escape trajectory')
+]</p>
+<p>plt.figure(figsize=(10,10))
+earth = plt.Circle((0, 0), R_E, color='blue', alpha=0.3, label='Earth')
+plt.gca().add_artist(earth)</p>
+<p>for v0, theta, label in params:
+    traj = simulate_trajectory(v0, theta)
+    plt.plot(traj[:,0], traj[:,1], label=f'{label}, v0={v0} m/s, angle={theta}°')</p>
+<p>plt.xlabel('x (meters)')
+plt.ylabel('y (meters)')
+plt.title('Payload Trajectories Near Earth')
+plt.legend()
+plt.axis('equal')
+plt.grid(True)
+plt.show()
+Results Explanation
+At 1000 m/s and 45°, the payload falls back to Earth — velocity too low to sustain orbit.</p>
+<p>At ~7800 m/s and 0°, the payload enters a near-circular low Earth orbit.</p>
+<p>At ~12000 m/s and 0°, the payload escapes Earth’s gravity on a hyperbolic trajectory.</p>
+<p>Conclusion
+The initial velocity magnitude and direction determine if the payload falls, orbits, or escapes Earth.</p>
+<p>Numerical integration with RK4 provides accurate trajectory prediction.</p>
+<p>This model is useful for mission planning, satellite deployment, and reentry analysis.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
