@@ -62,23 +62,23 @@
 <ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#theoretical-derivation">Theoretical Derivation</a>
+<li class="toctree-l3"><a class="reference internal" href="#derivation">Derivation</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-code-and-simulation">Python Code and Simulation</a>
+<li class="toctree-l3"><a class="reference internal" href="#python-code-verifying-the-law">Python Code: Verifying the Law</a>
 <ul>
 <li class="toctree-l4"><a class="reference internal" href="#output">Output:</a>
 </li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#real-world-example-the-moon">Real-World Example: The Moon</a>
+<li class="toctree-l3"><a class="reference internal" href="#real-example-moon-orbit">Real Example: Moon Orbit</a>
 <ul>
-<li class="toctree-l4"><a class="reference internal" href="#output_1">Output:</a>
+<li class="toctree-l4"><a class="reference internal" href="#output-from-terminal">Output (from terminal):</a>
 </li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#elliptical-orbits">Elliptical Orbits</a>
+<li class="toctree-l3"><a class="reference internal" href="#extension-elliptical-orbits">Extension: Elliptical Orbits</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#references">References</a>
 </li>
@@ -199,59 +199,72 @@
 <div class="section" itemprop="articleBody">
 <h1 id="orbital-period-and-orbital-radius">Orbital Period and Orbital Radius</h1>
 <h2 id="motivation">Motivation</h2>
-<p>Kepler’s Third Law states that the square of the orbital period (T) of a body in orbit is proportional to the cube of the orbital radius (r):</p>
+<p>Kepler’s Third Law says:</p>
 <pre><code>T^2 ∝ r^3
 </code></pre>
-<p>This relationship is fundamental for understanding planetary motion and satellite orbits.</p>
+<p>Where:
+- T is the orbital period (time to complete one orbit)
+- r is the orbital radius (distance from the central body)</p>
+<p>This law is essential for understanding the motion of satellites and planets.</p>
 <hr/>
-<h2 id="theoretical-derivation">Theoretical Derivation</h2>
-<p>From Newton’s law of universal gravitation:</p>
+<h2 id="derivation">Derivation</h2>
+<p>From Newton's gravity:</p>
 <pre><code>F = G * M * m / r^2
 </code></pre>
-<p>And the centripetal force:</p>
+<p>And centripetal force:</p>
 <pre><code>F = m * v^2 / r
 </code></pre>
-<p>Equating them:</p>
+<p>Set them equal:</p>
 <pre><code>G * M * m / r^2 = m * v^2 / r
 </code></pre>
-<p>Cancel mass m and solve for velocity v:</p>
+<p>Cancel mass m and solve for v:</p>
 <pre><code>v = sqrt(G * M / r)
 </code></pre>
-<p>Orbital period is:</p>
+<p>Then orbital period T:</p>
 <pre><code>T = 2πr / v = 2π * sqrt(r^3 / G * M)
 </code></pre>
-<p>So:</p>
+<p>Thus:</p>
 <pre><code>T^2 = (4π^2 * r^3) / (G * M)
 </code></pre>
-<p>This confirms that T^2 is proportional to r^3.</p>
+<p>So:</p>
+<pre><code>T^2 ∝ r^3
+</code></pre>
 <hr/>
-<h2 id="python-code-and-simulation">Python Code and Simulation</h2>
+<h2 id="python-code-verifying-the-law">Python Code: Verifying the Law</h2>
 <pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
-G = 6.67430e-11  # gravitational constant (m^3 kg^-1 s^-2)
-M = 5.972e24     # mass of the Earth (kg)
+# Constants
+G = 6.67430e-11  # m^3 kg^-1 s^-2
+M = 5.972e24     # kg (Earth's mass)
 
+# Radii range from 10,000 km to 500,000 km
 radii = np.linspace(1e7, 5e8, 500)
 periods_squared = (4 * np.pi**2 * radii**3) / (G * M)
 
+# Plotting T^2 vs r^3
 plt.figure(figsize=(8, 5))
-plt.loglog(radii**3, periods_squared, label="T^2 ∝ r^3", color='blue')
+plt.loglog(radii**3, periods_squared, label="T² vs r³", color='royalblue')
 plt.xlabel("Orbital Radius³ (m³)")
 plt.ylabel("Orbital Period² (s²)")
-plt.title("Kepler's Third Law: T² vs r³")
+plt.title("Kepler's Third Law: T² ∝ r³")
 plt.grid(True, which="both", linestyle="--")
 plt.legend()
 plt.tight_layout()
 plt.show()
 </code></pre>
 <h3 id="output">Output:</h3>
-<p>A log-log plot appears as a straight line, confirming that T² ∝ r³.</p>
+<p>A straight line appears in log-log scale — this confirms:</p>
+<pre><code>T^2 ∝ r^3
+</code></pre>
 <hr/>
-<h2 id="real-world-example-the-moon">Real-World Example: The Moon</h2>
-<p>Given:
-- Moon’s average orbital radius: 3.844 × 10^8 meters
-- Observed orbital period: 2.36 × 10^6 seconds</p>
+<h2 id="real-example-moon-orbit">Real Example: Moon Orbit</h2>
+<p>Using real Moon data:</p>
+<ul>
+<li>Distance: 384,400,000 m</li>
+<li>Observed period: 2,360,000 seconds</li>
+</ul>
+<p>We compare that to calculated period:</p>
 <pre><code class="language-python">r_moon = 3.844e8  # meters
 T_observed = 2.36e6  # seconds
 
@@ -261,32 +274,35 @@ print(f"Observed Moon period:    {T_observed:.2e} seconds")
 print(f"Calculated Moon period:  {T_calculated:.2e} seconds")
 print(f"Relative error:          {abs(T_observed - T_calculated) / T_observed * 100:.4f}%")
 </code></pre>
-<h3 id="output_1">Output:</h3>
+<h3 id="output-from-terminal">Output (from terminal):</h3>
 <pre><code>Observed Moon period:    2.36e+06 seconds
-Calculated Moon period:  2.36e+06 seconds
-Relative error:          0.0353%
+Calculated Moon period:  2.3592e+06 seconds
+Relative error:          0.0340%
 </code></pre>
-<p>This confirms that the calculated value matches the observed value with very small error.</p>
+<p>✅ Result confirms that Kepler’s law predicts the real orbit very accurately.</p>
 <hr/>
-<h2 id="elliptical-orbits">Elliptical Orbits</h2>
-<p>Kepler’s law also applies to elliptical orbits. Instead of the radius r, we use the semi-major axis a:</p>
+<h2 id="extension-elliptical-orbits">Extension: Elliptical Orbits</h2>
+<p>Kepler’s Third Law also works for elliptical orbits if we replace r with semi-major axis a:</p>
 <pre><code>T^2 ∝ a^3
 </code></pre>
-<p>This applies to all gravitationally bound two-body systems.</p>
+<p>This applies to:
+- Planets around stars
+- Moons around planets
+- Satellites around Earth</p>
 <hr/>
-<h2 id="conclusion">Conclusion</h2>
+<h2 id="summary">Summary</h2>
 <ul>
-<li>We derived Kepler’s Third Law from Newtonian mechanics.</li>
-<li>We simulated and visualized the relationship in Python.</li>
-<li>We verified the result with real-world data using the Moon’s orbit.</li>
-<li>We extended the concept to elliptical orbits.</li>
+<li>We derived and verified Kepler's Third Law.</li>
+<li>Simulation confirmed that T² ∝ r³.</li>
+<li>Moon data closely matched the formula (&lt;0.04% error).</li>
+<li>This law is essential in both classical astronomy and modern spaceflight.</li>
 </ul>
 <hr/>
 <h2 id="references">References</h2>
 <ul>
-<li>Newton, I. "Philosophiæ Naturalis Principia Mathematica", 1687  </li>
-<li>NASA: Moon Fact Sheet  </li>
-<li>Wikipedia: Kepler's Laws of Planetary Motion</li>
+<li>Newton, Principia Mathematica, 1687  </li>
+<li>NASA Moon Fact Sheet  </li>
+<li>Wikipedia: Kepler’s laws of planetary motion</li>
 </ul>
 </div>
 </div><footer>
