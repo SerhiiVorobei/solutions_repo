@@ -68,7 +68,13 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#theoretical-background">📚 Theoretical Background</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-simulation">🧮 Python Simulation</a>
+<li class="toctree-l3"><a class="reference internal" href="#python-simulation-code">🧽 Python Simulation Code</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#resulting-trajectories">🗃️ Resulting Trajectories</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interpretation">📊 Interpretation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#applications">🚀 Applications</a>
 </li>
 </ul>
 </li>
@@ -186,65 +192,76 @@
 <p>When an object is released from a moving rocket near Earth, its trajectory depends on initial conditions and gravitational forces. This is essential for understanding reentry, orbital insertion, or escape during space missions.</p>
 <h2 id="theoretical-background">📚 Theoretical Background</h2>
 <p>We analyze the motion using Newton's Law of Gravitation:</p>
-<p>F = GMm / r²</p>
+<p><strong>F = GMm / r²</strong></p>
 <p>And the resulting acceleration in 2D space:</p>
-<p>aₓ = -GMx / r³, aᵧ = -GMy / r³</p>
-<p>Different initial velocities lead to various types of trajectories:</p>
+<p><strong>aₓ = -GMx / r³</strong>
+<strong>aᵤ = -GMy / r³</strong></p>
+<p>Possible trajectory types based on initial velocity:</p>
 <ul>
-<li><strong>Suborbital (Reentry)</strong> – The object falls back to Earth.</li>
-<li><strong>Elliptical Orbit</strong> – A stable, closed orbital path.</li>
-<li><strong>Circular Orbit</strong> – A special case of elliptical with constant radius.</li>
-<li><strong>Escape Trajectory</strong> – The object leaves Earth's gravity field.</li>
-<li><strong>Hyperbolic Path</strong> – A faster-than-escape velocity trajectory.</li>
+<li><strong>Suborbital (Reentry):</strong> Falls back to Earth.</li>
+<li><strong>Elliptical Orbit:</strong> Closed orbital path.</li>
+<li><strong>Circular Orbit:</strong> Special case of elliptical with constant radius.</li>
+<li><strong>Escape Trajectory:</strong> Exits Earth's gravity.</li>
+<li><strong>Hyperbolic Path:</strong> Faster-than-escape trajectory.</li>
 </ul>
-<h2 id="python-simulation">🧮 Python Simulation</h2>
-<p>Below is a Python script that simulates the motion using numerical integration:</p>
-<p>```python
-import numpy as np
+<h2 id="python-simulation-code">🧽 Python Simulation Code</h2>
+<pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import solve_ivp</p>
-<h1 id="constants">Constants</h1>
-<p>G = 6.67430e-11
+from scipy.integrate import solve_ivp
+
+# Constants
+G = 6.67430e-11
 M = 5.972e24
 R_earth = 6.371e6
-mu = G * M</p>
-<p>def equations(t, y):
+mu = G * M
+
+def equations(t, y):
     x, vx, y_pos, vy = y
-    r = np.sqrt(x<strong>2 + y_pos</strong>2)
-    ax = -mu * x / r<strong>3
-    ay = -mu * y_pos / r</strong>3
-    return [vx, ax, vy, ay]</p>
-<p>def simulate_trajectory(r0, v0, t_max=20000, dt=10):
+    r = np.sqrt(x**2 + y_pos**2)
+    ax = -mu * x / r**3
+    ay = -mu * y_pos / r**3
+    return [vx, ax, vy, ay]
+
+def simulate_trajectory(r0, v0, t_max=20000, dt=10):
     y0 = [r0[0], v0[0], r0[1], v0[1]]
     t_span = (0, t_max)
     t_eval = np.arange(0, t_max, dt)
     sol = solve_ivp(equations, t_span, y0, t_eval=t_eval, rtol=1e-8)
-    return sol</p>
-<h1 id="initial-position-300-km-above-earth">Initial position (300 km above Earth)</h1>
-<p>altitude = 300e3
-r0 = [R_earth + altitude, 0]</p>
-<h1 id="velocities">Velocities</h1>
-<p>v_circular = np.sqrt(mu / np.linalg.norm(r0))
-v_escape = np.sqrt(2) * v_circular</p>
-<p>velocities = {
+    return sol
+
+# Initial position (300 km altitude)
+altitude = 300e3
+r0 = [R_earth + altitude, 0]
+
+# Orbital speeds
+v_circular = np.sqrt(mu / np.linalg.norm(r0))
+v_escape = np.sqrt(2) * v_circular
+
+# Different scenarios
+velocities = {
     "Suborbital (Reentry)": [0.7 * v_circular, 0],
     "Circular Orbit": [0, v_circular],
     "Escape Trajectory": [0, v_escape],
     "Elliptical Orbit": [0, 0.9 * v_circular],
     "Hyperbolic Path": [0, 1.5 * v_circular]
-}</p>
-<p>plt.figure(figsize=(10, 10))</p>
-<p>for label, v0 in velocities.items():
+}
+
+# Plot
+plt.figure(figsize=(10, 10))
+
+for label, v0 in velocities.items():
     sol = simulate_trajectory(r0, v0)
     x, y = sol.y[0], sol.y[2]
-    plt.plot(x / 1000, y / 1000, label=label)</p>
-<h1 id="draw-earth">Draw Earth</h1>
-<p>theta = np.linspace(0, 2 * np.pi, 1000)
+    plt.plot(x / 1000, y / 1000, label=label)
+
+# Draw Earth
+theta = np.linspace(0, 2 * np.pi, 1000)
 earth_x = R_earth * np.cos(theta) / 1000
 earth_y = R_earth * np.sin(theta) / 1000
 plt.plot(earth_x, earth_y, 'k', linewidth=2)
-plt.fill(earth_x, earth_y, 'lightblue', label="Earth")</p>
-<p>plt.xlabel("x (km)")
+plt.fill(earth_x, earth_y, 'lightblue', label="Earth")
+
+plt.xlabel("x (km)")
 plt.ylabel("y (km)")
 plt.title("Payload Trajectories Near Earth")
 plt.axis("equal")
@@ -252,27 +269,34 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.savefig("trajectory.png")
-plt.show()</p>
-<p>🖼️ Resulting Trajectories</p>
-<p>The graph below shows the various paths the payload can follow depending on its initial velocity and direction:</p>
-<p>📊 Interpretation of Results</p>
-<pre><code>Reentry: Below orbital speed – crashes back to Earth.
-
-Stable Orbit: At circular or elliptical speeds.
-
-Escape: Above escape velocity – leaves Earth's gravity.
-
-Hyperbolic: A steep trajectory, fast exit.
+plt.show()
 </code></pre>
-<p>🛰️ Applications</p>
-<pre><code>Space capsule reentry and safety
-
-Satellite deployment strategies
-
-Designing interplanetary missions
-
-Avoiding orbital debris
-</code></pre>
+<h2 id="resulting-trajectories">🗃️ Resulting Trajectories</h2>
+<p>This plot shows the payload’s paths depending on initial velocity:</p>
+<p><img alt="Payload Trajectories" src="../trajectory.png"/></p>
+<p>Make sure that <code>trajectory.png</code> is saved in the same folder as this file.</p>
+<h2 id="interpretation">📊 Interpretation</h2>
+<ul>
+<li><strong>Reentry:</strong> Insufficient speed → object crashes to Earth.</li>
+<li><strong>Circular Orbit:</strong> Maintains constant altitude.</li>
+<li><strong>Elliptical Orbit:</strong> Varies in distance from Earth.</li>
+<li><strong>Escape:</strong> Leaves Earth’s gravity with minimum energy.</li>
+<li><strong>Hyperbolic:</strong> Exceeds escape velocity with faster trajectory.</li>
+</ul>
+<h2 id="applications">🚀 Applications</h2>
+<ul>
+<li>Satellite deployment</li>
+<li>Capsule reentry simulations</li>
+<li>Interplanetary mission design</li>
+<li>Space debris risk analysis</li>
+</ul>
+<hr/>
+<p>📅 <strong>To view the plot:</strong></p>
+<ul>
+<li>Save the Python code in a file like <code>simulate.py</code> and run it.</li>
+<li>Ensure <code>trajectory.png</code> is generated and placed next to <code>README.md</code>.</li>
+<li>Push your project to GitHub — the image and layout will display properly.</li>
+</ul>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
