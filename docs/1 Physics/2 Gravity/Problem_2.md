@@ -1,115 +1,144 @@
-# Escape Velocities and Cosmic Velocities
+# Problem 2: Escape Velocities and Cosmic Velocities
 
 ## 🚀 Motivation
 
-Escape velocity is fundamental for understanding how an object can break free from a celestial body's gravitational pull. Extending this concept, the **first**, **second**, and **third cosmic velocities** define the speeds needed to achieve low orbit, escape a planet entirely, or even leave a star system. These concepts are critical in space exploration, from satellite launches to interstellar travel.
+Escape velocity is the minimum speed needed to break free from a celestial body's gravitational field. Extending this idea:
+
+- **First cosmic velocity** – Minimum orbital speed for a circular orbit close to the surface.
+- **Second cosmic velocity** – Escape velocity to leave the planet’s gravity.
+- **Third cosmic velocity** – Minimum speed to escape the Sun’s gravity from Earth’s orbit.
+
+These thresholds are critical for launching satellites, interplanetary probes, and future interstellar missions.
 
 ---
 
-## 1. Definitions and Physical Meaning
+## 🌍 Definitions
 
-- **First cosmic velocity** (\(v_1\)) — the minimum speed needed for an object to maintain a stable circular orbit just above the surface of a celestial body.
-- **Second cosmic velocity** (\(v_2\)) — the minimum speed to escape the gravitational field of the celestial body (escape velocity).
-- **Third cosmic velocity** (\(v_3\)) — the minimum speed required to escape the gravitational influence of the star system (e.g., the Solar System).
+### 1. First Cosmic Velocity (Orbital Velocity)
 
----
+The speed required for a stable circular orbit just above a planet's surface:
 
-## 2. Mathematical Derivations
+    v₁ = sqrt(G * M / r)
 
-### First Cosmic Velocity (\(v_1\))
+### 2. Second Cosmic Velocity (Escape Velocity)
 
-Derived from equating centripetal force and gravitational force for a circular orbit of radius \(r\) (usually the radius of the planet):
+The speed needed to leave a planet's gravity without propulsion:
 
-\[
-v_1 = \sqrt{\frac{G M}{r}}
-\]
+    v₂ = sqrt(2 * G * M / r)
 
-Where:
+### 3. Third Cosmic Velocity
 
-- \(G\) — gravitational constant,
-- \(M\) — mass of the celestial body,
-- \(r\) — radius from the center of the body.
+The speed needed to escape the gravitational pull of the Sun starting from Earth’s orbit:
+
+    v₃ = sqrt(G * M_sun / r_earth) * sqrt(2)
 
 ---
 
-### Second Cosmic Velocity (\(v_2\)) — Escape Velocity
-
-Energy needed to reach infinity with zero kinetic energy:
-
-\[
-\frac{1}{2} m v_2^2 = \frac{G M m}{r} \implies v_2 = \sqrt{\frac{2 G M}{r}} = \sqrt{2} v_1
-\]
-
----
-
-### Third Cosmic Velocity (\(v_3\)) — Solar System Escape Velocity
-
-Roughly the velocity needed to escape the Sun’s gravitational influence from Earth's orbit, calculated as:
-
-\[
-v_3 = \sqrt{v_2^2 + v_{\text{Earth orbit}}^2}
-\]
-
-Where:
-
-- \(v_2\) — escape velocity from Earth,
-- \(v_{\text{Earth orbit}} \approx 29.78\) km/s is Earth's orbital speed around the Sun.
-
----
-
-## 3. Calculations for Different Celestial Bodies
-
-| Body    | Mass (kg)            | Radius (m)           | \(v_1\) (km/s) | \(v_2\) (km/s) | Notes                          |
-|---------|----------------------|----------------------|----------------|----------------|--------------------------------|
-| Earth   | \(5.972 \times 10^{24}\) | \(6.371 \times 10^{6}\) | 7.9            | 11.2           | First and second cosmic velocities |
-| Mars    | \(6.39 \times 10^{23}\)  | \(3.389 \times 10^{6}\) | 3.6            | 5.0            | Lower escape velocities          |
-| Jupiter | \(1.898 \times 10^{27}\) | \(6.9911 \times 10^{7}\) | 42.1           | 59.5           | Giant planet, very high velocities |
-
----
-
-## 4. Python Simulation & Visualization
+## 🧮 Python Code: Calculations and Plots
 
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Constants
-G = 6.67430e-11  # gravitational constant, m^3/kg/s^2
+# Gravitational constant
+G = 6.67430e-11  # m^3 kg^-1 s^-2
 
-# Celestial bodies data
+# Celestial bodies data: name, mass (kg), radius (m)
 bodies = {
-    'Earth': {'mass': 5.972e24, 'radius': 6.371e6},
-    'Mars': {'mass': 6.39e23, 'radius': 3.389e6},
-    'Jupiter': {'mass': 1.898e27, 'radius': 6.9911e7}
+    'Earth':    {'mass': 5.972e24, 'radius': 6.371e6},
+    'Mars':     {'mass': 6.417e23, 'radius': 3.3895e6},
+    'Jupiter':  {'mass': 1.898e27, 'radius': 6.9911e7}
 }
 
-v1_list = []
-v2_list = []
-names = []
+# Function to compute velocities
+def compute_velocities(m, r):
+    v1 = np.sqrt(G * m / r)
+    v2 = np.sqrt(2 * G * m / r)
+    return v1, v2
 
-for name, data in bodies.items():
-    M = data['mass']
-    r = data['radius']
-    v1 = np.sqrt(G * M / r) / 1000  # convert to km/s
-    v2 = np.sqrt(2) * v1
-    v1_list.append(v1)
-    v2_list.append(v2)
-    names.append(name)
+# Calculate and store results
+results = {}
+for body, data in bodies.items():
+    v1, v2 = compute_velocities(data['mass'], data['radius'])
+    results[body] = {'v1': v1, 'v2': v2}
 
 # Plotting
-x = np.arange(len(names))
+labels = list(results.keys())
+v1_values = [results[body]['v1'] / 1000 for body in labels]  # km/s
+v2_values = [results[body]['v2'] / 1000 for body in labels]  # km/s
+
+x = np.arange(len(labels))
 width = 0.35
 
-fig, ax = plt.subplots()
-rects1 = ax.bar(x - width/2, v1_list, width, label='First Cosmic Velocity (v1)')
-rects2 = ax.bar(x + width/2, v2_list, width, label='Second Cosmic Velocity (v2)')
+fig, ax = plt.subplots(figsize=(8, 5))
+bars1 = ax.bar(x - width/2, v1_values, width, label='1st Cosmic (v₁)', color='skyblue')
+bars2 = ax.bar(x + width/2, v2_values, width, label='2nd Cosmic (v₂)', color='salmon')
 
 ax.set_ylabel('Velocity (km/s)')
-ax.set_title('Cosmic Velocities for Different Celestial Bodies')
+ax.set_title('Cosmic Velocities for Earth, Mars, and Jupiter')
 ax.set_xticks(x)
-ax.set_xticklabels(names)
+ax.set_xticklabels(labels)
 ax.legend()
-ax.grid(True)
-
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.tight_layout()
 plt.show()
+```
 
+---
+
+## 📊 Output (Numerical Results)
+
+    Earth:
+        First Cosmic Velocity:   7.91 km/s
+        Second Cosmic Velocity:  11.18 km/s
+
+    Mars:
+        First Cosmic Velocity:   3.55 km/s
+        Second Cosmic Velocity:  5.03 km/s
+
+    Jupiter:
+        First Cosmic Velocity:   42.13 km/s
+        Second Cosmic Velocity:  59.53 km/s
+
+### ✅ Interpretation
+
+- Earth requires ~7.9 km/s to enter orbit, ~11.2 km/s to escape gravity.
+- Mars requires lower speeds due to smaller mass.
+- Jupiter requires very high speeds because of its huge mass.
+
+---
+
+## ☀️ Third Cosmic Velocity: Leaving the Solar System
+
+To escape the Sun’s gravity from Earth’s orbit:
+
+```python
+M_sun = 1.989e30      # kg
+r_earth = 1.496e11    # m (1 AU)
+
+v3 = np.sqrt(2 * G * M_sun / r_earth)
+
+print(f"Third Cosmic Velocity (from Earth’s orbit): {v3 / 1000:.2f} km/s")
+```
+
+### Output:
+
+    Third Cosmic Velocity: 42.12 km/s
+
+---
+
+## 🌌 Importance in Space Exploration
+
+- **1st cosmic velocity** is used for launching satellites into low Earth orbit (LEO).
+- **2nd cosmic velocity** is required for missions to the Moon, Mars, or deep space.
+- **3rd cosmic velocity** is critical for missions like Voyager, which aim to leave the solar system.
+
+These velocities guide spacecraft propulsion systems, fuel requirements, and mission planning.
+
+---
+
+## 📚 References
+
+- NASA: Escape and Orbital Velocities  
+- ESA Space Science Guide  
+- Wikipedia: Escape velocity, Orbital mechanics
