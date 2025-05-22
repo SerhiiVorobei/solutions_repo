@@ -114,11 +114,3 @@ This plot shows the payload’s paths depending on initial velocity:
 * Capsule reentry simulations
 * Interplanetary mission design
 * Space debris risk analysis
-
----
-
-📅 **To view the plot:**
-
-* Save the Python code in a file like `simulate.py` and run it.
-* Ensure `trajectory.png` is generated and placed next to `README.md`.
-* Push your project to GitHub — the image and layout will display properly.
