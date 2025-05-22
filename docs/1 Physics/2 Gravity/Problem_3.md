@@ -99,7 +99,6 @@ This plot shows the payload’s paths depending on initial velocity:
 
 ![Payload Trajectories](trajectory.png)
 
-Make sure that `trajectory.png` is saved in the same folder as this file.
 
 ## 📊 Interpretation
 
