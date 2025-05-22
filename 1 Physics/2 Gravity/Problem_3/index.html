@@ -68,19 +68,13 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#physics-background">🌍 Physics Background</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#types-of-trajectories">✨ Types of Trajectories</a>
+<li class="toctree-l3"><a class="reference internal" href="#trajectory-types-based-on-velocity">✨ Trajectory Types Based on Velocity</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#python-code-simulating-trajectories">🧮 Python Code: Simulating Trajectories</a>
+<li class="toctree-l3"><a class="reference internal" href="#python-simulation-code">💻 Python Simulation Code</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#output-summary">📊 Output Summary</a>
-<ul>
-<li class="toctree-l4"><a class="reference internal" href="#results-by-velocity">Results by Velocity:</a>
+<li class="toctree-l3"><a class="reference internal" href="#output-simulation-results">📈 Output (Simulation Results)</a>
 </li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#discussion">🌌 Discussion</a>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#further-improvements">🔬 Further Improvements</a>
+<li class="toctree-l3"><a class="reference internal" href="#applications">🚀 Applications</a>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#references">📚 References</a>
 </li>
@@ -204,76 +198,58 @@
 <li>Enter orbit (circular or elliptical)</li>
 <li>Escape Earth's gravity (hyperbolic)</li>
 </ul>
-<p>This is crucial for satellite deployment, reentry planning, and deep-space missions.</p>
+<p>Understanding this is essential for satellite deployment, reentry planning, and deep-space missions.</p>
 <hr/>
 <h2 id="physics-background">🌍 Physics Background</h2>
-<p>The force acting on the payload is Newton's law of gravitation:</p>
+<p>The gravitational force follows Newton's Law:</p>
 <blockquote>
-<p><strong>F = G · M · m / r²</strong></p>
+<p><strong>F = G · M · m / r²</strong> → <strong>a = -G · M / r²</strong></p>
 </blockquote>
-<p>Leading to the acceleration:</p>
-<blockquote>
-<p><strong>a = -G · M / r²</strong> (toward Earth)</p>
-</blockquote>
-<p>Where:</p>
-<ul>
-<li>G = gravitational constant</li>
-<li>M = Earth's mass</li>
-<li>r = distance from Earth’s center</li>
-</ul>
-<p>The resulting <strong>trajectory</strong> is determined by:
-- Initial position
-- Initial velocity vector</p>
+<p>Where:
+- <strong>G</strong> is the gravitational constant
+- <strong>M</strong> is Earth’s mass
+- <strong>r</strong> is the distance from Earth’s center</p>
 <hr/>
-<h2 id="types-of-trajectories">✨ Types of Trajectories</h2>
+<h2 id="trajectory-types-based-on-velocity">✨ Trajectory Types Based on Velocity</h2>
 <table>
 <thead>
 <tr>
-<th>Trajectory Type</th>
-<th>Velocity Range</th>
+<th>Type</th>
+<th>Description</th>
 <th>Shape</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Suborbital</td>
-<td>&lt; Circular orbit speed (~7.7 km/s)</td>
+<td>Suborbital (&lt;7.7 km/s)</td>
+<td>Falls back to Earth</td>
 <td>Arc</td>
 </tr>
 <tr>
-<td>Circular orbit</td>
-<td>~7.7 km/s</td>
+<td>Circular (~7.7 km/s)</td>
+<td>Maintains orbit</td>
 <td>Circle</td>
 </tr>
 <tr>
-<td>Elliptical orbit</td>
-<td>7.7 – 11.2 km/s</td>
-<td>Ellipse</td>
-</tr>
-<tr>
-<td>Escape trajectory</td>
-<td>≥ 11.2 km/s</td>
-<td>Parabola / Hyperbola</td>
+<td>Escape (≥11.2 km/s)</td>
+<td>Leaves Earth’s gravity</td>
+<td>Hyperbola</td>
 </tr>
 </tbody>
 </table>
 <hr/>
-<h2 id="python-code-simulating-trajectories">🧮 Python Code: Simulating Trajectories</h2>
+<h2 id="python-simulation-code">💻 Python Simulation Code</h2>
 <pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
-# Constants
-G = 6.67430e-11         # Gravitational constant (m³/kg/s²)
-M = 5.972e24            # Mass of Earth (kg)
-R_earth = 6.371e6       # Radius of Earth (m)
+G = 6.67430e-11
+M = 5.972e24
+R_earth = 6.371e6
 
-# Initial position: 400 km above Earth
 altitude = 400e3
 r0 = np.array([R_earth + altitude, 0])
 
-# Velocity options
 v_circular = np.sqrt(G * M / np.linalg.norm(r0))
-v_escape = np.sqrt(2 * G * M / np.linalg.norm(r0))
 
 initial_velocities = {
     "Suborbital (5 km/s)": np.array([0, 5e3]),
@@ -281,88 +257,63 @@ initial_velocities = {
     "Escape (&gt;11 km/s)": np.array([0, 11.2e3])
 }
 
-# Simulation parameters
-dt = 1         # time step (s)
-t_max = 6000   # total time (s)
+dt = 1
+t_max = 6000
 
 def simulate_trajectory(r0, v0):
     r = r0.copy()
     v = v0.copy()
     positions = []
-
     for _ in range(int(t_max / dt)):
         r_norm = np.linalg.norm(r)
         if r_norm &lt;= R_earth:
-            break  # impact with Earth
+            break
         a = -G * M * r / r_norm**3
         v += a * dt
         r += v * dt
         positions.append(r.copy())
     return np.array(positions)
 
-# Plotting
 plt.figure(figsize=(8, 8))
 theta = np.linspace(0, 2 * np.pi, 500)
 plt.plot(R_earth * np.cos(theta), R_earth * np.sin(theta), 'k', label="Earth")
 
-for label, v0 in initial_velocities.items():
+colors = ['red', 'blue', 'green']
+for (label, v0), color in zip(initial_velocities.items(), colors):
     trajectory = simulate_trajectory(r0, v0)
-    plt.plot(trajectory[:, 0], trajectory[:, 1], label=label)
+    plt.plot(trajectory[:, 0], trajectory[:, 1], label=label, color=color)
 
 plt.gca().set_aspect('equal')
-plt.title("Trajectories of Released Payloads")
+plt.title("Trajectories of Released Payloads Near Earth")
 plt.xlabel("X Position (m)")
 plt.ylabel("Y Position (m)")
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
+plt.savefig("payload_trajectories.png")
 plt.show()
 </code></pre>
 <hr/>
-<h2 id="output-summary">📊 Output Summary</h2>
-<p><strong>Initial Altitude:</strong> 400 km<br/>
-<strong>Gravitational body:</strong> Earth</p>
-<h3 id="results-by-velocity">Results by Velocity:</h3>
-<h4 id="suborbital-5-kms">🔻 Suborbital (5 km/s)</h4>
-<ul>
-<li>Result: Payload crashes into Earth.</li>
-<li>Application: Capsules, test flights, missiles.</li>
-</ul>
-<h4 id="circular-orbit-77-kms">🛰️ Circular Orbit (~7.7 km/s)</h4>
-<ul>
-<li>Result: Payload remains in a low Earth orbit.</li>
-<li>Application: Satellites, ISS.</li>
-</ul>
-<h4 id="escape-trajectory-112-kms">🛸 Escape Trajectory (11.2 km/s)</h4>
-<ul>
-<li>Result: Payload escapes Earth's gravity.</li>
-<li>Application: Lunar missions, probes to Mars or outer planets.</li>
-</ul>
+<h2 id="output-simulation-results">📈 Output (Simulation Results)</h2>
+<p>The following image shows how different speeds affect the trajectory of the payload launched from 400 km altitude:</p>
+<p><img alt="Payload Trajectories" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."/></p>
+<blockquote>
+<p>🔺 <em>Note: Base64 content was trimmed here due to length.</em><br/>
+🧩 In реальному файлі я вставлю <strong>повну Base64-версію</strong> зображення.</p>
+</blockquote>
 <hr/>
-<h2 id="discussion">🌌 Discussion</h2>
-<p>This simulation demonstrates how <strong>small differences in initial speed</strong> radically alter the trajectory:</p>
+<h2 id="applications">🚀 Applications</h2>
 <ul>
-<li><strong>Too slow</strong> → crash.</li>
-<li><strong>Precise</strong> → orbit.</li>
-<li><strong>Too fast</strong> → escape.</li>
-</ul>
-<p>These principles are used for:
-- Launch window planning
-- Mission trajectory design
-- Ensuring spacecraft don't reenter prematurely</p>
-<hr/>
-<h2 id="further-improvements">🔬 Further Improvements</h2>
-<ul>
-<li>Add air resistance for reentry realism</li>
-<li>Simulate using Runge-Kutta (RK4) for higher accuracy</li>
-<li>Vary release angle to analyze direction effects</li>
+<li>Satellite and ISS deployment</li>
+<li>Reentry capsule planning</li>
+<li>Mission design for interplanetary probes</li>
 </ul>
 <hr/>
 <h2 id="references">📚 References</h2>
 <ul>
 <li>NASA Orbital Mechanics: https://www.nasa.gov/sites/default/files/atoms/files/orbital_mechanics.pdf  </li>
-<li>ESA Spaceflight Dynamics Guide  </li>
-<li>Bate, Mueller &amp; White – <em>Fundamentals of Astrodynamics</em></li>
+<li>ESA Spaceflight Dynamics  </li>
+<li><em>Fundamentals of Astrodynamics</em>, Bate, Mueller &amp; White</li>
 </ul>
 </div>
 </div><footer>
