@@ -1,126 +1,138 @@
-# Trajectories of a Freely Released Payload Near Earth
+# Problem 3: Trajectories of a Freely Released Payload Near Earth
 
-## 🚀 Motivation
+## 🎯 Motivation
 
-When an object is released from a moving rocket near Earth, its trajectory depends critically on the initial conditions (position, velocity, altitude) and Earth's gravity. The resulting motion can be elliptical (orbit), parabolic (escape trajectory), or hyperbolic (escape with excess velocity). Understanding these trajectories is essential for space missions, including satellite deployment, orbital insertion, and reentry planning.
+When a payload is released from a spacecraft near Earth, it may:
+- Reenter the atmosphere and crash (suborbital)
+- Go into stable orbit (elliptical or circular)
+- Escape Earth’s gravity (hyperbolic trajectory)
 
----
-
-## 1. Theoretical Background
-
-### Newton’s Law of Universal Gravitation
-
-The gravitational force acting on the payload of mass \(m\) at position vector \(\mathbf{r}\) relative to Earth's center is:
-
-\[
-\mathbf{F} = -\frac{G M_e m}{r^3} \mathbf{r}
-\]
-
-Where:
-
-- \(G = 6.67430 \times 10^{-11} \, \text{m}^3\text{kg}^{-1}\text{s}^{-2}\) — gravitational constant,
-- \(M_e = 5.972 \times 10^{24} \, \text{kg}\) — Earth's mass,
-- \(r = |\mathbf{r}|\) — distance from Earth's center.
-
-### Equation of Motion
-
-Using Newton's second law:
-
-\[
-m \mathbf{\ddot{r}} = \mathbf{F} \implies \mathbf{\ddot{r}} = -\frac{G M_e}{r^3} \mathbf{r}
-\]
-
-This second-order vector differential equation governs the motion of the payload.
+The path depends on its velocity and direction at release. Understanding this is crucial for:
+- Deploying satellites
+- Deorbiting spacecraft
+- Planning interplanetary missions
 
 ---
 
-## 2. Types of Trajectories
+## 🌍 Physical Background
 
-The nature of the orbit depends on the total mechanical energy \(E\):
+The payload is affected only by Earth's gravity (ignoring air resistance):
 
-\[
-E = \frac{1}{2} m v^2 - \frac{G M_e m}{r}
-\]
+Newton’s law:
 
-- **Elliptical Orbit:** \(E < 0\) — payload is gravitationally bound.
-- **Parabolic Trajectory:** \(E = 0\) — payload reaches escape velocity.
-- **Hyperbolic Trajectory:** \(E > 0\) — payload escapes with excess kinetic energy.
+    F = G * M * m / r²
 
----
+This results in an acceleration toward Earth:
 
-## 3. Numerical Simulation Approach
+    a = -G * M / r²
 
-We will:
-
-- Use the initial position and velocity of the payload relative to Earth's center.
-- Numerically integrate the equations of motion using the 4th order Runge-Kutta method via `scipy.integrate.solve_ivp`.
-- Simulate the trajectory over a given time span.
-- Visualize trajectories in 2D for clarity.
+The trajectory depends on initial velocity vector **v₀** and position **r₀**.
 
 ---
 
-## 4. Python Implementation
+## 🔢 Numerical Simulation (Python)
+
+We'll simulate the motion using Euler integration.
 
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import solve_ivp
 
 # Constants
-G = 6.67430e-11          # gravitational constant, m^3/kg/s^2
-M_e = 5.972e24           # Earth mass, kg
-R_e = 6.371e6            # Earth radius, m
-
-def equations(t, y):
-    # y = [x, y, vx, vy]
-    rx, ry, vx, vy = y
-    r = np.sqrt(rx**2 + ry**2)
-    
-    ax = -G * M_e * rx / r**3
-    ay = -G * M_e * ry / r**3
-    
-    return [vx, vy, ax, ay]
+G = 6.67430e-11  # m^3 kg^-1 s^-2
+M = 5.972e24     # kg
+R_earth = 6.371e6  # m
 
 # Initial conditions
-# Example: Payload released from 400 km altitude with initial velocity
-altitude = 400e3  # 400 km above Earth's surface
-initial_speed = 7800  # approx low Earth orbit speed in m/s
+altitude = 400e3  # 400 km above surface (LEO)
+r0 = np.array([R_earth + altitude, 0])  # initial position
+v_escape = np.sqrt(2 * G * M / np.linalg.norm(r0))
+v_circular = np.sqrt(G * M / np.linalg.norm(r0))
 
-# Initial position (x, y)
-x0 = R_e + altitude
-y0 = 0.0
+# Try different velocities
+initial_velocities = {
+    "Suborbital (5 km/s)": np.array([0, 5e3]),
+    "Circular Orbit (~7.67 km/s)": np.array([0, v_circular]),
+    "Escape (>11 km/s)": np.array([0, 11.2e3])
+}
 
-# Initial velocity (vx, vy)
-vx0 = 0.0
-vy0 = initial_speed
+# Simulation parameters
+dt = 1  # second
+t_max = 6000  # simulate up to 6000 s
 
-# Initial state vector
-y0_vec = [x0, y0, vx0, vy0]
+# Simulation loop
+def simulate_trajectory(r0, v0):
+    r = r0.copy()
+    v = v0.copy()
+    positions = []
 
-# Time span for simulation (seconds)
-t_span = (0, 6000)  # simulate for 6000 seconds (~1.67 hours)
-t_eval = np.linspace(*t_span, 5000)
+    for _ in range(int(t_max / dt)):
+        r_norm = np.linalg.norm(r)
+        if r_norm <= R_earth:
+            break  # hit Earth
+        a = -G * M * r / r_norm**3
+        v += a * dt
+        r += v * dt
+        positions.append(r.copy())
+    return np.array(positions)
 
-# Solve ODE using Runge-Kutta method
-sol = solve_ivp(equations, t_span, y0_vec, t_eval=t_eval, rtol=1e-9, atol=1e-9)
+# Plotting all scenarios
+plt.figure(figsize=(8, 8))
+theta = np.linspace(0, 2 * np.pi, 500)
+plt.plot(R_earth * np.cos(theta), R_earth * np.sin(theta), 'k', label="Earth")
 
-# Extract solution
-x = sol.y[0]
-y = sol.y[1]
+for label, v0 in initial_velocities.items():
+    traj = simulate_trajectory(r0, v0)
+    plt.plot(traj[:, 0], traj[:, 1], label=label)
 
-# Earth outline for reference
-theta = np.linspace(0, 2*np.pi, 100)
-earth_x = R_e * np.cos(theta)
-earth_y = R_e * np.sin(theta)
-
-# Plot trajectory and Earth
-plt.figure(figsize=(8,8))
-plt.plot(earth_x, earth_y, 'b', label='Earth')
-plt.plot(x, y, 'r', label='Payload trajectory')
-plt.xlabel('x (m)')
-plt.ylabel('y (m)')
-plt.title('Trajectory of Payload Released Near Earth')
-plt.axis('equal')
-plt.grid(True)
+plt.gca().set_aspect('equal')
+plt.title("Trajectories of Payloads Released Near Earth")
+plt.xlabel("x [m]")
+plt.ylabel("y [m]")
 plt.legend()
+plt.grid(True)
+plt.tight_layout()
 plt.show()
+```
+
+---
+
+## 📊 Results and Interpretation
+
+### 1. Suborbital (5 km/s)
+- Trajectory returns to Earth.
+- This is not enough for a stable orbit.
+- Used in missile launches or capsule reentry.
+
+### 2. Circular Orbit (~7.67 km/s)
+- Payload maintains a stable circular orbit.
+- Used for ISS and most satellites.
+
+### 3. Escape Velocity (11.2 km/s)
+- Payload follows a hyperbolic path and escapes Earth's gravity.
+- Used for missions to the Moon, Mars, or beyond.
+
+---
+
+## 💡 Real Applications
+
+- **Satellite Deployment:** Requires precise orbital speed for mission type.
+- **Deorbit Maneuvers:** Reduce speed → payload falls to Earth.
+- **Escape Missions:** Speed up to reach Moon, Mars, or leave Solar System.
+
+---
+
+## 🔍 Observations
+
+- Changing only the initial speed (not direction) dramatically alters trajectory type.
+- All orbits are conic sections: circle, ellipse, parabola, or hyperbola.
+- Simulating numerically helps visualize real mission scenarios.
+
+---
+
+## 📚 References
+
+- NASA: Basic orbital mechanics
+- "Fundamentals of Astrodynamics" – Bate, Mueller, White
+- Wikipedia: Trajectory (physics), Orbital mechanics
+
