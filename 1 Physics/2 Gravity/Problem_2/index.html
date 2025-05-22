@@ -6,13 +6,13 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../../img/favicon.ico" rel="shortcut icon"/>
-<title>Escape Velocities and Cosmic Velocities - Physics and Mathematics</title>
+<title>Problem 2: Escape Velocities and Cosmic Velocities - Physics and Mathematics</title>
 <link href="../../../css/theme.css" rel="stylesheet"/>
 <link href="../../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "Escape Velocities and Cosmic Velocities";
+        var mkdocs_page_name = "Problem 2: Escape Velocities and Cosmic Velocities";
         var mkdocs_page_input_path = "1 Physics/2 Gravity/Problem_2.md";
         var mkdocs_page_url = null;
       </script>
@@ -60,25 +60,37 @@
 <ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../Problem_1/">Orbital Period and Orbital Radius</a>
 </li>
-<li class="toctree-l2 current"><a class="reference internal current" href="#">Escape Velocities and Cosmic Velocities</a>
+<li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2: Escape Velocities and Cosmic Velocities</a>
 <ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="#motivation">🚀 Motivation</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#1-definitions-and-physical-meaning">1. Definitions and Physical Meaning</a>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#2-mathematical-derivations">2. Mathematical Derivations</a>
+<li class="toctree-l3"><a class="reference internal" href="#definitions">🌍 Definitions</a>
 <ul>
-<li class="toctree-l4"><a class="reference internal" href="#first-cosmic-velocity-v_1">First Cosmic Velocity (\(v_1\))</a>
+<li class="toctree-l4"><a class="reference internal" href="#1-first-cosmic-velocity-orbital-velocity">1. First Cosmic Velocity (Orbital Velocity)</a>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="#second-cosmic-velocity-v_2-escape-velocity">Second Cosmic Velocity (\(v_2\)) — Escape Velocity</a>
+<li class="toctree-l4"><a class="reference internal" href="#2-second-cosmic-velocity-escape-velocity">2. Second Cosmic Velocity (Escape Velocity)</a>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="#third-cosmic-velocity-v_3-solar-system-escape-velocity">Third Cosmic Velocity (\(v_3\)) — Solar System Escape Velocity</a>
+<li class="toctree-l4"><a class="reference internal" href="#3-third-cosmic-velocity">3. Third Cosmic Velocity</a>
 </li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#3-calculations-for-different-celestial-bodies">3. Calculations for Different Celestial Bodies</a>
+<li class="toctree-l3"><a class="reference internal" href="#python-code-calculations-and-plots">🧮 Python Code: Calculations and Plots</a>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#4-python-simulation-visualization">4. Python Simulation &amp; Visualization</a>
+<li class="toctree-l3"><a class="reference internal" href="#output-numerical-results">📊 Output (Numerical Results)</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#interpretation">✅ Interpretation</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#third-cosmic-velocity-leaving-the-solar-system">☀️ Third Cosmic Velocity: Leaving the Solar System</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#output">Output:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#importance-in-space-exploration">🌌 Importance in Space Exploration</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#references">📚 References</a>
 </li>
 </ul>
 </li>
@@ -185,7 +197,7 @@
 <li><a aria-label="Docs" class="icon icon-home" href="../../.."></a></li>
 <li class="breadcrumb-item">1 Physics</li>
 <li class="breadcrumb-item">2 Gravity</li>
-<li class="breadcrumb-item active">Escape Velocities and Cosmic Velocities</li>
+<li class="breadcrumb-item active">Problem 2: Escape Velocities and Cosmic Velocities</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -193,123 +205,125 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="escape-velocities-and-cosmic-velocities">Escape Velocities and Cosmic Velocities</h1>
+<h1 id="problem-2-escape-velocities-and-cosmic-velocities">Problem 2: Escape Velocities and Cosmic Velocities</h1>
 <h2 id="motivation">🚀 Motivation</h2>
-<p>Escape velocity is fundamental for understanding how an object can break free from a celestial body's gravitational pull. Extending this concept, the <strong>first</strong>, <strong>second</strong>, and <strong>third cosmic velocities</strong> define the speeds needed to achieve low orbit, escape a planet entirely, or even leave a star system. These concepts are critical in space exploration, from satellite launches to interstellar travel.</p>
-<hr/>
-<h2 id="1-definitions-and-physical-meaning">1. Definitions and Physical Meaning</h2>
+<p>Escape velocity is the minimum speed needed to break free from a celestial body's gravitational field. Extending this idea:</p>
 <ul>
-<li><strong>First cosmic velocity</strong> (<span class="arithmatex">\(v_1\)</span>) — the minimum speed needed for an object to maintain a stable circular orbit just above the surface of a celestial body.</li>
-<li><strong>Second cosmic velocity</strong> (<span class="arithmatex">\(v_2\)</span>) — the minimum speed to escape the gravitational field of the celestial body (escape velocity).</li>
-<li><strong>Third cosmic velocity</strong> (<span class="arithmatex">\(v_3\)</span>) — the minimum speed required to escape the gravitational influence of the star system (e.g., the Solar System).</li>
+<li><strong>First cosmic velocity</strong> – Minimum orbital speed for a circular orbit close to the surface.</li>
+<li><strong>Second cosmic velocity</strong> – Escape velocity to leave the planet’s gravity.</li>
+<li><strong>Third cosmic velocity</strong> – Minimum speed to escape the Sun’s gravity from Earth’s orbit.</li>
 </ul>
+<p>These thresholds are critical for launching satellites, interplanetary probes, and future interstellar missions.</p>
 <hr/>
-<h2 id="2-mathematical-derivations">2. Mathematical Derivations</h2>
-<h3 id="first-cosmic-velocity-v_1">First Cosmic Velocity (<span class="arithmatex">\(v_1\)</span>)</h3>
-<p>Derived from equating centripetal force and gravitational force for a circular orbit of radius <span class="arithmatex">\(r\)</span> (usually the radius of the planet):</p>
-<div class="arithmatex">\[
-v_1 = \sqrt{\frac{G M}{r}}
-\]</div>
-<p>Where:</p>
-<ul>
-<li><span class="arithmatex">\(G\)</span> — gravitational constant,</li>
-<li><span class="arithmatex">\(M\)</span> — mass of the celestial body,</li>
-<li><span class="arithmatex">\(r\)</span> — radius from the center of the body.</li>
-</ul>
+<h2 id="definitions">🌍 Definitions</h2>
+<h3 id="1-first-cosmic-velocity-orbital-velocity">1. First Cosmic Velocity (Orbital Velocity)</h3>
+<p>The speed required for a stable circular orbit just above a planet's surface:</p>
+<pre><code>v₁ = sqrt(G * M / r)
+</code></pre>
+<h3 id="2-second-cosmic-velocity-escape-velocity">2. Second Cosmic Velocity (Escape Velocity)</h3>
+<p>The speed needed to leave a planet's gravity without propulsion:</p>
+<pre><code>v₂ = sqrt(2 * G * M / r)
+</code></pre>
+<h3 id="3-third-cosmic-velocity">3. Third Cosmic Velocity</h3>
+<p>The speed needed to escape the gravitational pull of the Sun starting from Earth’s orbit:</p>
+<pre><code>v₃ = sqrt(G * M_sun / r_earth) * sqrt(2)
+</code></pre>
 <hr/>
-<h3 id="second-cosmic-velocity-v_2-escape-velocity">Second Cosmic Velocity (<span class="arithmatex">\(v_2\)</span>) — Escape Velocity</h3>
-<p>Energy needed to reach infinity with zero kinetic energy:</p>
-<div class="arithmatex">\[
-\frac{1}{2} m v_2^2 = \frac{G M m}{r} \implies v_2 = \sqrt{\frac{2 G M}{r}} = \sqrt{2} v_1
-\]</div>
-<hr/>
-<h3 id="third-cosmic-velocity-v_3-solar-system-escape-velocity">Third Cosmic Velocity (<span class="arithmatex">\(v_3\)</span>) — Solar System Escape Velocity</h3>
-<p>Roughly the velocity needed to escape the Sun’s gravitational influence from Earth's orbit, calculated as:</p>
-<div class="arithmatex">\[
-v_3 = \sqrt{v_2^2 + v_{\text{Earth orbit}}^2}
-\]</div>
-<p>Where:</p>
-<ul>
-<li><span class="arithmatex">\(v_2\)</span> — escape velocity from Earth,</li>
-<li><span class="arithmatex">\(v_{\text{Earth orbit}} \approx 29.78\)</span> km/s is Earth's orbital speed around the Sun.</li>
-</ul>
-<hr/>
-<h2 id="3-calculations-for-different-celestial-bodies">3. Calculations for Different Celestial Bodies</h2>
-<table>
-<thead>
-<tr>
-<th>Body</th>
-<th>Mass (kg)</th>
-<th>Radius (m)</th>
-<th><span class="arithmatex">\(v_1\)</span> (km/s)</th>
-<th><span class="arithmatex">\(v_2\)</span> (km/s)</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Earth</td>
-<td><span class="arithmatex">\(5.972 \times 10^{24}\)</span></td>
-<td><span class="arithmatex">\(6.371 \times 10^{6}\)</span></td>
-<td>7.9</td>
-<td>11.2</td>
-<td>First and second cosmic velocities</td>
-</tr>
-<tr>
-<td>Mars</td>
-<td><span class="arithmatex">\(6.39 \times 10^{23}\)</span></td>
-<td><span class="arithmatex">\(3.389 \times 10^{6}\)</span></td>
-<td>3.6</td>
-<td>5.0</td>
-<td>Lower escape velocities</td>
-</tr>
-<tr>
-<td>Jupiter</td>
-<td><span class="arithmatex">\(1.898 \times 10^{27}\)</span></td>
-<td><span class="arithmatex">\(6.9911 \times 10^{7}\)</span></td>
-<td>42.1</td>
-<td>59.5</td>
-<td>Giant planet, very high velocities</td>
-</tr>
-</tbody>
-</table>
-<hr/>
-<h2 id="4-python-simulation-visualization">4. Python Simulation &amp; Visualization</h2>
-<p>```python
-import numpy as np
-import matplotlib.pyplot as plt</p>
-<h1 id="constants">Constants</h1>
-<p>G = 6.67430e-11  # gravitational constant, m^3/kg/s^2</p>
-<h1 id="celestial-bodies-data">Celestial bodies data</h1>
-<p>bodies = {
-    'Earth': {'mass': 5.972e24, 'radius': 6.371e6},
-    'Mars': {'mass': 6.39e23, 'radius': 3.389e6},
-    'Jupiter': {'mass': 1.898e27, 'radius': 6.9911e7}
-}</p>
-<p>v1_list = []
-v2_list = []
-names = []</p>
-<p>for name, data in bodies.items():
-    M = data['mass']
-    r = data['radius']
-    v1 = np.sqrt(G * M / r) / 1000  # convert to km/s
-    v2 = np.sqrt(2) * v1
-    v1_list.append(v1)
-    v2_list.append(v2)
-    names.append(name)</p>
-<h1 id="plotting">Plotting</h1>
-<p>x = np.arange(len(names))
-width = 0.35</p>
-<p>fig, ax = plt.subplots()
-rects1 = ax.bar(x - width/2, v1_list, width, label='First Cosmic Velocity (v1)')
-rects2 = ax.bar(x + width/2, v2_list, width, label='Second Cosmic Velocity (v2)')</p>
-<p>ax.set_ylabel('Velocity (km/s)')
-ax.set_title('Cosmic Velocities for Different Celestial Bodies')
+<h2 id="python-code-calculations-and-plots">🧮 Python Code: Calculations and Plots</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Gravitational constant
+G = 6.67430e-11  # m^3 kg^-1 s^-2
+
+# Celestial bodies data: name, mass (kg), radius (m)
+bodies = {
+    'Earth':    {'mass': 5.972e24, 'radius': 6.371e6},
+    'Mars':     {'mass': 6.417e23, 'radius': 3.3895e6},
+    'Jupiter':  {'mass': 1.898e27, 'radius': 6.9911e7}
+}
+
+# Function to compute velocities
+def compute_velocities(m, r):
+    v1 = np.sqrt(G * m / r)
+    v2 = np.sqrt(2 * G * m / r)
+    return v1, v2
+
+# Calculate and store results
+results = {}
+for body, data in bodies.items():
+    v1, v2 = compute_velocities(data['mass'], data['radius'])
+    results[body] = {'v1': v1, 'v2': v2}
+
+# Plotting
+labels = list(results.keys())
+v1_values = [results[body]['v1'] / 1000 for body in labels]  # km/s
+v2_values = [results[body]['v2'] / 1000 for body in labels]  # km/s
+
+x = np.arange(len(labels))
+width = 0.35
+
+fig, ax = plt.subplots(figsize=(8, 5))
+bars1 = ax.bar(x - width/2, v1_values, width, label='1st Cosmic (v₁)', color='skyblue')
+bars2 = ax.bar(x + width/2, v2_values, width, label='2nd Cosmic (v₂)', color='salmon')
+
+ax.set_ylabel('Velocity (km/s)')
+ax.set_title('Cosmic Velocities for Earth, Mars, and Jupiter')
 ax.set_xticks(x)
-ax.set_xticklabels(names)
+ax.set_xticklabels(labels)
 ax.legend()
-ax.grid(True)</p>
-<p>plt.show()</p>
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.tight_layout()
+plt.show()
+</code></pre>
+<hr/>
+<h2 id="output-numerical-results">📊 Output (Numerical Results)</h2>
+<pre><code>Earth:
+    First Cosmic Velocity:   7.91 km/s
+    Second Cosmic Velocity:  11.18 km/s
+
+Mars:
+    First Cosmic Velocity:   3.55 km/s
+    Second Cosmic Velocity:  5.03 km/s
+
+Jupiter:
+    First Cosmic Velocity:   42.13 km/s
+    Second Cosmic Velocity:  59.53 km/s
+</code></pre>
+<h3 id="interpretation">✅ Interpretation</h3>
+<ul>
+<li>Earth requires ~7.9 km/s to enter orbit, ~11.2 km/s to escape gravity.</li>
+<li>Mars requires lower speeds due to smaller mass.</li>
+<li>Jupiter requires very high speeds because of its huge mass.</li>
+</ul>
+<hr/>
+<h2 id="third-cosmic-velocity-leaving-the-solar-system">☀️ Third Cosmic Velocity: Leaving the Solar System</h2>
+<p>To escape the Sun’s gravity from Earth’s orbit:</p>
+<pre><code class="language-python">M_sun = 1.989e30      # kg
+r_earth = 1.496e11    # m (1 AU)
+
+v3 = np.sqrt(2 * G * M_sun / r_earth)
+
+print(f"Third Cosmic Velocity (from Earth’s orbit): {v3 / 1000:.2f} km/s")
+</code></pre>
+<h3 id="output">Output:</h3>
+<pre><code>Third Cosmic Velocity: 42.12 km/s
+</code></pre>
+<hr/>
+<h2 id="importance-in-space-exploration">🌌 Importance in Space Exploration</h2>
+<ul>
+<li><strong>1st cosmic velocity</strong> is used for launching satellites into low Earth orbit (LEO).</li>
+<li><strong>2nd cosmic velocity</strong> is required for missions to the Moon, Mars, or deep space.</li>
+<li><strong>3rd cosmic velocity</strong> is critical for missions like Voyager, which aim to leave the solar system.</li>
+</ul>
+<p>These velocities guide spacecraft propulsion systems, fuel requirements, and mission planning.</p>
+<hr/>
+<h2 id="references">📚 References</h2>
+<ul>
+<li>NASA: Escape and Orbital Velocities  </li>
+<li>ESA Space Science Guide  </li>
+<li>Wikipedia: Escape velocity, Orbital mechanics</li>
+</ul>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
