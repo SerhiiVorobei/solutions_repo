@@ -1,157 +1,118 @@
-# Trajectories of a Freely Released Payload Near Earth
+# 🚀 Problem 3: Trajectories of a Freely Released Payload Near Earth
 
-## Motivation
+## 🎯 Motivation
 
-When an object is released from a moving rocket near Earth, its trajectory depends on initial conditions (position, velocity, altitude) and Earth's gravitational forces. Understanding these trajectories is crucial for space missions like satellite deployment or payload return.
+When an object is released from a moving rocket near Earth, its trajectory depends on initial conditions and gravitational forces. This is essential for understanding reentry, orbital insertion, or escape during space missions.
 
-## Theory
+## 📚 Theoretical Background
 
-The motion of a payload near Earth is governed by Newton's law of universal gravitation:
+We analyze the motion using Newton's Law of Gravitation:
 
-\[
-\mathbf{F} = -\frac{GMm}{r^3} \mathbf{r}
-\]
+F = GMm / r²
 
-where:  
-- \(G = 6.67430 \times 10^{-11} \, m^3\,kg^{-1}\,s^{-2}\) — gravitational constant,  
-- \(M = 5.972 \times 10^{24} \, kg\) — Earth's mass,  
-- \(m\) — payload mass,  
-- \(\mathbf{r}\) — position vector from Earth's center,  
-- \(r = |\mathbf{r}|\).
 
-The acceleration of the payload is:
+And the resulting acceleration in 2D space:
 
-\[
-\mathbf{a} = -\frac{GM}{r^3} \mathbf{r}
-\]
+aₓ = -GMx / r³, aᵧ = -GMy / r³
 
-### Types of trajectories:
 
-- **Elliptical orbit** (\(0 \leq e < 1\)) — payload is gravitationally bound to Earth.
-- **Parabolic trajectory** (\(e = 1\)) — payload travels at exactly escape velocity.
-- **Hyperbolic trajectory** (\(e > 1\)) — payload escapes Earth's gravity.
+Different initial velocities lead to various types of trajectories:
 
----
+- **Suborbital (Reentry)** – The object falls back to Earth.
+- **Elliptical Orbit** – A stable, closed orbital path.
+- **Circular Orbit** – A special case of elliptical with constant radius.
+- **Escape Trajectory** – The object leaves Earth's gravity field.
+- **Hyperbolic Path** – A faster-than-escape velocity trajectory.
 
-## Numerical Simulation
+## 🧮 Python Simulation
 
-To simulate the payload trajectory, we use the 4th-order Runge-Kutta (RK4) method to integrate the equations of motion numerically.
-
-### Initial conditions:
-
-- Initial altitude \(h\) (e.g., 200 km above Earth’s surface),
-- Initial velocity magnitude \(v_0\) and launch angle \(\theta\) relative to horizontal,
-- Initial position at \((R_E + h, 0)\) where \(R_E\) is Earth's radius.
-
----
-
-## Python Code
+Below is a Python script that simulates the motion using numerical integration:
 
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
 
 # Constants
-G = 6.67430e-11        # gravitational constant, m^3/kg/s^2
-M = 5.972e24           # Earth mass, kg
-R_E = 6371000          # Earth radius, m
+G = 6.67430e-11
+M = 5.972e24
+R_earth = 6.371e6
+mu = G * M
 
-def acceleration(r):
-    """Calculate gravitational acceleration at position r."""
-    norm_r = np.linalg.norm(r)
-    return -G * M * r / norm_r**3
+def equations(t, y):
+    x, vx, y_pos, vy = y
+    r = np.sqrt(x**2 + y_pos**2)
+    ax = -mu * x / r**3
+    ay = -mu * y_pos / r**3
+    return [vx, ax, vy, ay]
 
-def rk4_step(r, v, dt):
-    """Perform one RK4 integration step."""
-    k1_v = acceleration(r)
-    k1_r = v
-    
-    k2_v = acceleration(r + 0.5 * dt * k1_r)
-    k2_r = v + 0.5 * dt * k1_v
-    
-    k3_v = acceleration(r + 0.5 * dt * k2_r)
-    k3_r = v + 0.5 * dt * k2_v
-    
-    k4_v = acceleration(r + dt * k3_r)
-    k4_r = v + dt * k3_v
-    
-    r_next = r + (dt / 6) * (k1_r + 2*k2_r + 2*k3_r + k4_r)
-    v_next = v + (dt / 6) * (k1_v + 2*k2_v + 2*k3_v + k4_v)
-    
-    return r_next, v_next
+def simulate_trajectory(r0, v0, t_max=20000, dt=10):
+    y0 = [r0[0], v0[0], r0[1], v0[1]]
+    t_span = (0, t_max)
+    t_eval = np.arange(0, t_max, dt)
+    sol = solve_ivp(equations, t_span, y0, t_eval=t_eval, rtol=1e-8)
+    return sol
 
-def simulate_trajectory(v0, theta_deg, h=200000, t_max=6000, dt=1):
-    """
-    Simulate payload trajectory near Earth.
-    
-    Parameters:
-    v0          - initial velocity magnitude (m/s)
-    theta_deg   - launch angle in degrees relative to horizontal
-    h           - initial altitude (m)
-    t_max       - simulation duration (s)
-    dt          - timestep (s)
-    
-    Returns:
-    numpy array of trajectory points [[x1, y1], [x2, y2], ...]
-    """
-    theta = np.radians(theta_deg)
-    r = np.array([R_E + h, 0.0])                   # initial position vector
-    v = v0 * np.array([np.cos(theta), np.sin(theta)])  # initial velocity vector
-    
-    trajectory = [r.copy()]
-    t = 0
-    
-    while t < t_max:
-        r, v = rk4_step(r, v, dt)
-        trajectory.append(r.copy())
-        t += dt
-        
-        # Stop if payload hits the ground
-        if np.linalg.norm(r) <= R_E:
-            break
-    
-    return np.array(trajectory)
+# Initial position (300 km above Earth)
+altitude = 300e3
+r0 = [R_earth + altitude, 0]
 
-# Example simulations:
+# Velocities
+v_circular = np.sqrt(mu / np.linalg.norm(r0))
+v_escape = np.sqrt(2) * v_circular
 
-# Three scenarios:
-# 1) Sub-orbital speed (1000 m/s), 45 degrees angle
-# 2) Orbital speed (~7800 m/s), horizontal (0 degrees)
-# 3) Above escape velocity (~12000 m/s), horizontal (0 degrees)
+velocities = {
+    "Suborbital (Reentry)": [0.7 * v_circular, 0],
+    "Circular Orbit": [0, v_circular],
+    "Escape Trajectory": [0, v_escape],
+    "Elliptical Orbit": [0, 0.9 * v_circular],
+    "Hyperbolic Path": [0, 1.5 * v_circular]
+}
 
-params = [
-    (1000, 45, 'Sub-orbital fall'),
-    (7800, 0, 'Low Earth Orbit'),
-    (12000, 0, 'Escape trajectory')
-]
+plt.figure(figsize=(10, 10))
 
-plt.figure(figsize=(10,10))
-earth = plt.Circle((0, 0), R_E, color='blue', alpha=0.3, label='Earth')
-plt.gca().add_artist(earth)
+for label, v0 in velocities.items():
+    sol = simulate_trajectory(r0, v0)
+    x, y = sol.y[0], sol.y[2]
+    plt.plot(x / 1000, y / 1000, label=label)
 
-for v0, theta, label in params:
-    traj = simulate_trajectory(v0, theta)
-    plt.plot(traj[:,0], traj[:,1], label=f'{label}, v0={v0} m/s, angle={theta}°')
+# Draw Earth
+theta = np.linspace(0, 2 * np.pi, 1000)
+earth_x = R_earth * np.cos(theta) / 1000
+earth_y = R_earth * np.sin(theta) / 1000
+plt.plot(earth_x, earth_y, 'k', linewidth=2)
+plt.fill(earth_x, earth_y, 'lightblue', label="Earth")
 
-plt.xlabel('x (meters)')
-plt.ylabel('y (meters)')
-plt.title('Payload Trajectories Near Earth')
-plt.legend()
-plt.axis('equal')
+plt.xlabel("x (km)")
+plt.ylabel("y (km)")
+plt.title("Payload Trajectories Near Earth")
+plt.axis("equal")
 plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.savefig("trajectory.png")
 plt.show()
-Results Explanation
-At 1000 m/s and 45°, the payload falls back to Earth — velocity too low to sustain orbit.
 
-At ~7800 m/s and 0°, the payload enters a near-circular low Earth orbit.
+🖼️ Resulting Trajectories
 
-At ~12000 m/s and 0°, the payload escapes Earth’s gravity on a hyperbolic trajectory.
+The graph below shows the various paths the payload can follow depending on its initial velocity and direction:
 
-Conclusion
-The initial velocity magnitude and direction determine if the payload falls, orbits, or escapes Earth.
+📊 Interpretation of Results
 
-Numerical integration with RK4 provides accurate trajectory prediction.
+    Reentry: Below orbital speed – crashes back to Earth.
 
-This model is useful for mission planning, satellite deployment, and reentry analysis.
+    Stable Orbit: At circular or elliptical speeds.
 
+    Escape: Above escape velocity – leaves Earth's gravity.
 
+    Hyperbolic: A steep trajectory, fast exit.
+
+🛰️ Applications
+
+    Space capsule reentry and safety
+
+    Satellite deployment strategies
+
+    Designing interplanetary missions
+
+    Avoiding orbital debris
