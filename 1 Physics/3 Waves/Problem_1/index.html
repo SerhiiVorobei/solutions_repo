@@ -6,13 +6,13 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../../img/favicon.ico" rel="shortcut icon"/>
-<title>Interference Patterns from Point Sources on a Regular Polygon - Physics and Mathematics</title>
+<title>Problem 1 - Physics and Mathematics</title>
 <link href="../../../css/theme.css" rel="stylesheet"/>
 <link href="../../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "Interference Patterns from Point Sources on a Regular Polygon";
+        var mkdocs_page_name = "Problem 1";
         var mkdocs_page_input_path = "1 Physics/3 Waves/Problem_1.md";
         var mkdocs_page_url = null;
       </script>
@@ -68,15 +68,7 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal current">3 Waves</a>
 <ul class="current">
-<li class="toctree-l2 current"><a class="reference internal current" href="#">Interference Patterns from Point Sources on a Regular Polygon</a>
-<ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="#problem-description">Problem Description</a>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#python-code">Python Code</a>
-</li>
-</ul>
+<li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 </li>
 </ul>
 </li>
@@ -173,7 +165,7 @@
 <li><a aria-label="Docs" class="icon icon-home" href="../../.."></a></li>
 <li class="breadcrumb-item">1 Physics</li>
 <li class="breadcrumb-item">3 Waves</li>
-<li class="breadcrumb-item active">Interference Patterns from Point Sources on a Regular Polygon</li>
+<li class="breadcrumb-item active">Problem 1</li>
 <li class="wy-breadcrumbs-aside">
 </li>
 </ul>
@@ -181,70 +173,84 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="interference-patterns-from-point-sources-on-a-regular-polygon">Interference Patterns from Point Sources on a Regular Polygon</h1>
-<hr/>
-<h2 id="problem-description">Problem Description</h2>
-<p>Interference happens when waves from multiple sources overlap, creating regions of increased (constructive) or decreased (destructive) wave amplitude.</p>
-<p>In this project, we simulate interference patterns formed by circular waves emitted from point sources placed at the vertices of a regular polygon.</p>
-<hr/>
-<h2 id="theory">Theory</h2>
-<p>Each wave from a source is described by:</p>
-<div class="arithmatex">\[
-\eta_i(\mathbf{r}, t) = A \cos(k r_i - \omega t + \phi_i)
-\]</div>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Wave Interference Pattern</title>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2 {
+            color: #005a9c;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            overflow-x: auto;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+<h1>🌊 Interference Pattern on a Water Surface</h1>
+<h2>🎯 Objective</h2>
+<p>Visualize and analyze the interference pattern created by circular water waves emitted from three point sources placed at the vertices of an equilateral triangle.</p>
+<h2>🧠 Background</h2>
+<p>Interference occurs when multiple waves overlap. If waves are in phase, they amplify each other (constructive interference); if out of phase, they cancel out (destructive interference). On a water surface, this creates visible ripple patterns.</p>
+<h2>🧾 Wave Equation</h2>
+<p>The displacement at any point on the water surface due to a single wave source is given by:</p>
+<pre>
+ψ(x, y, t) = A · cos(k·r - ω·t + φ)
+    </pre>
 <ul>
-<li><span class="arithmatex">\(A\)</span> = amplitude  </li>
-<li><span class="arithmatex">\(k = \frac{2\pi}{\lambda}\)</span> = wave number  </li>
-<li><span class="arithmatex">\(\omega = 2\pi f\)</span> = angular frequency  </li>
-<li><span class="arithmatex">\(r_i\)</span> = distance from source <span class="arithmatex">\(i\)</span> to observation point <span class="arithmatex">\(\mathbf{r}\)</span> </li>
-<li><span class="arithmatex">\(\phi_i\)</span> = initial phase (same for all sources here)  </li>
-<li><span class="arithmatex">\(t\)</span> = time  </li>
+<li><strong>A</strong>: amplitude</li>
+<li><strong>λ</strong>: wavelength</li>
+<li><strong>k = 2π/λ</strong>: wave number</li>
+<li><strong>ω = 2π·f</strong>: angular frequency</li>
+<li><strong>r</strong>: distance from wave source to point (x, y)</li>
+<li><strong>φ</strong>: initial phase (0 for all sources)</li>
 </ul>
-<p>The total displacement is:</p>
-<div class="arithmatex">\[
-\eta(\mathbf{r}, t) = \sum_{i=1}^N \eta_i(\mathbf{r}, t)
-\]</div>
-<hr/>
-<h2 id="python-code">Python Code</h2>
-<p>```python
-import numpy as np
-import matplotlib.pyplot as plt</p>
-<h1 id="parameters">Parameters</h1>
-<p>N = 5              # Number of sources (e.g. 5 for pentagon)
-R = 5.0            # Radius of the circumscribed circle
-A = 1.0            # Wave amplitude
-wavelength = 2.0   # Wavelength
-k = 2 * np.pi / wavelength  # Wave number
-frequency = 1.0
-omega = 2 * np.pi * frequency
-phi = 0            # Initial phase
-t = 0              # Time snapshot</p>
-<h1 id="source-positions-vertices-of-a-regular-polygon">Source positions (vertices of a regular polygon)</h1>
-<p>angles = np.linspace(0, 2 * np.pi, N, endpoint=False)
-sources_x = R * np.cos(angles)
-sources_y = R * np.sin(angles)</p>
-<h1 id="grid-for-calculation">Grid for calculation</h1>
-<p>grid_size = 300
-x = np.linspace(-10, 10, grid_size)
-y = np.linspace(-10, 10, grid_size)
-X, Y = np.meshgrid(x, y)</p>
-<h1 id="calculate-total-wave-displacement-at-each-point">Calculate total wave displacement at each point</h1>
-<p>eta_total = np.zeros_like(X)
-for x_s, y_s in zip(sources_x, sources_y):
-    r = np.sqrt((X - x_s)<strong>2 + (Y - y_s)</strong>2) + 1e-6  # Avoid division by zero
-    eta_total += A * np.cos(k * r - omega * t + phi)</p>
-<h1 id="plotting">Plotting</h1>
-<p>plt.figure(figsize=(10, 8))
-plt.title(f'Interference Pattern from {N}-sided Polygon Sources', fontsize=16)
-plt.xlabel('x')
-plt.ylabel('y')
-plt.pcolormesh(X, Y, eta_total, shading='auto', cmap='RdBu')
-plt.colorbar(label='Wave displacement')
-plt.scatter(sources_x, sources_y, c='black', s=100, label='Sources')
-plt.legend()
-plt.axis('equal')
-plt.tight_layout()
-plt.show()</p>
+<h2>📈 Result</h2>
+<p>The image below shows the result of wave superposition from 3 coherent sources arranged in a triangle:</p>
+<img alt="Wave Interference Pattern" src="interference_plot.png"/>
+<p><strong>🔴 Red zones:</strong> Constructive interference (waves reinforce).<br/>
+<strong>🔵 Blue zones:</strong> Destructive interference (waves cancel).<br/>
+<strong>⚫ Black dots:</strong> Positions of wave sources.</p>
+<h2>📌 Conclusion</h2>
+<p>This visualization demonstrates how symmetry in source placement results in structured, predictable interference patterns. The triangle setup leads to 3-fold symmetry and a repeating interference grid.</p>
+<h2>🧪 Try This!</h2>
+<ul>
+<li>Change the polygon (e.g., square, pentagon) and observe how patterns change.</li>
+<li>Add time animation for dynamic wave visualization.</li>
+<li>Introduce phase shifts to explore wave coherence.</li>
+</ul>
+</body>
+</html>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
