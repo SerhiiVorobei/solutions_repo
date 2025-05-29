@@ -1,81 +1,89 @@
-# Interference Patterns from Point Sources on a Regular Polygon
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wave Interference Pattern</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
 
----
+        h1, h2 {
+            color: #005a9c;
+        }
 
-## Problem Description
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
 
-Interference happens when waves from multiple sources overlap, creating regions of increased (constructive) or decreased (destructive) wave amplitude.
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
 
-In this project, we simulate interference patterns formed by circular waves emitted from point sources placed at the vertices of a regular polygon.
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            overflow-x: auto;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
 
----
+    <h1>🌊 Interference Pattern on a Water Surface</h1>
 
-## Theory
+    <h2>🎯 Objective</h2>
+    <p>Visualize and analyze the interference pattern created by circular water waves emitted from three point sources placed at the vertices of an equilateral triangle.</p>
 
-Each wave from a source is described by:
+    <h2>🧠 Background</h2>
+    <p>Interference occurs when multiple waves overlap. If waves are in phase, they amplify each other (constructive interference); if out of phase, they cancel out (destructive interference). On a water surface, this creates visible ripple patterns.</p>
 
-\[
-\eta_i(\mathbf{r}, t) = A \cos(k r_i - \omega t + \phi_i)
-\]
+    <h2>🧾 Wave Equation</h2>
+    <p>The displacement at any point on the water surface due to a single wave source is given by:</p>
 
-- \(A\) = amplitude  
-- \(k = \frac{2\pi}{\lambda}\) = wave number  
-- \(\omega = 2\pi f\) = angular frequency  
-- \(r_i\) = distance from source \(i\) to observation point \(\mathbf{r}\)  
-- \(\phi_i\) = initial phase (same for all sources here)  
-- \(t\) = time  
+    <pre>
+ψ(x, y, t) = A · cos(k·r - ω·t + φ)
+    </pre>
 
-The total displacement is:
+    <ul>
+        <li><strong>A</strong>: amplitude</li>
+        <li><strong>λ</strong>: wavelength</li>
+        <li><strong>k = 2π/λ</strong>: wave number</li>
+        <li><strong>ω = 2π·f</strong>: angular frequency</li>
+        <li><strong>r</strong>: distance from wave source to point (x, y)</li>
+        <li><strong>φ</strong>: initial phase (0 for all sources)</li>
+    </ul>
 
-\[
-\eta(\mathbf{r}, t) = \sum_{i=1}^N \eta_i(\mathbf{r}, t)
-\]
+    <h2>📈 Result</h2>
+    <p>The image below shows the result of wave superposition from 3 coherent sources arranged in a triangle:</p>
 
----
+    <img src="interference_plot.png" alt="Wave Interference Pattern">
 
-## Python Code
+    <p><strong>🔴 Red zones:</strong> Constructive interference (waves reinforce).<br>
+       <strong>🔵 Blue zones:</strong> Destructive interference (waves cancel).<br>
+       <strong>⚫ Black dots:</strong> Positions of wave sources.</p>
 
-```python
-import numpy as np
-import matplotlib.pyplot as plt
+    <h2>📌 Conclusion</h2>
+    <p>This visualization demonstrates how symmetry in source placement results in structured, predictable interference patterns. The triangle setup leads to 3-fold symmetry and a repeating interference grid.</p>
 
-# Parameters
-N = 5              # Number of sources (e.g. 5 for pentagon)
-R = 5.0            # Radius of the circumscribed circle
-A = 1.0            # Wave amplitude
-wavelength = 2.0   # Wavelength
-k = 2 * np.pi / wavelength  # Wave number
-frequency = 1.0
-omega = 2 * np.pi * frequency
-phi = 0            # Initial phase
-t = 0              # Time snapshot
+    <h2>🧪 Try This!</h2>
+    <ul>
+        <li>Change the polygon (e.g., square, pentagon) and observe how patterns change.</li>
+        <li>Add time animation for dynamic wave visualization.</li>
+        <li>Introduce phase shifts to explore wave coherence.</li>
+    </ul>
 
-# Source positions (vertices of a regular polygon)
-angles = np.linspace(0, 2 * np.pi, N, endpoint=False)
-sources_x = R * np.cos(angles)
-sources_y = R * np.sin(angles)
-
-# Grid for calculation
-grid_size = 300
-x = np.linspace(-10, 10, grid_size)
-y = np.linspace(-10, 10, grid_size)
-X, Y = np.meshgrid(x, y)
-
-# Calculate total wave displacement at each point
-eta_total = np.zeros_like(X)
-for x_s, y_s in zip(sources_x, sources_y):
-    r = np.sqrt((X - x_s)**2 + (Y - y_s)**2) + 1e-6  # Avoid division by zero
-    eta_total += A * np.cos(k * r - omega * t + phi)
-
-# Plotting
-plt.figure(figsize=(10, 8))
-plt.title(f'Interference Pattern from {N}-sided Polygon Sources', fontsize=16)
-plt.xlabel('x')
-plt.ylabel('y')
-plt.pcolormesh(X, Y, eta_total, shading='auto', cmap='RdBu')
-plt.colorbar(label='Wave displacement')
-plt.scatter(sources_x, sources_y, c='black', s=100, label='Sources')
-plt.legend()
-plt.axis('equal')
-plt.tight_layout()
-plt.show()
+</body>
+</html>
